@@ -19,15 +19,8 @@ class InscriptionController {
         include __DIR__ . '/../Views/inscriptionView.php';
     }
 
-    //Supprime des variables de session
-    private function unsetSessionVariables($variables = []){
-        foreach ($variables as $variable) {
-            unset($_SESSION[$variable]);
-        }
-    }
-
     // Valide les données du formulaire d'inscription
-    public function validerFormulaireInscription($donnee) {
+    private function validerFormulaireInscription($donnee) {
         $errors = [];
         $values = [];
 
@@ -36,7 +29,7 @@ class InscriptionController {
             "nom" => "validerNom",
             "prenom" => "validerPrenom",
             "date_naissance" => "validerDateNaissance",
-            "courriel" => "validerEmail",
+            "courriel" => "validerEmailInscription",
             "mot_de_passe" => "validerMotDePasse",
             "telephone" => "validerTelephone"
         ];
@@ -62,7 +55,7 @@ class InscriptionController {
         return [$errors, $values];
     }
 
-    // Inscription de l'utilisateur après validation
+    // Inscription de l'utilisateur après validation 
     public function inscrire($donnee) {
         try {
             list($errors, $values) = $this->validerFormulaireInscription($donnee);
@@ -80,10 +73,11 @@ class InscriptionController {
                 );
     
                 $this->utilisateurService->inscrireUtilisateur($utilisateur);
-                $this->unsetSessionVariables(['errors','values']);
-                header("Location: /publics/success.php"); //A modifier
+                ValidateurDeFormulaire::unsetSessionVariables(['errors','values']);
+                header("Location: ../public/connexion.php");
                 exit;
-            } else {
+            } 
+            else {
                 // Stocke erreurs et valeurs pour ré-affichage
                 $_SESSION['errors'] = $errors;
                 $_SESSION['values'] = $values;

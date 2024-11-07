@@ -21,17 +21,24 @@ class ValidateurDeFormulaire {
     }
     
     // Validation de l'email
-    public static function validerEmail($email) {
-        if (empty($email)) {
-            return "Le courriel est obligatoire";
-        }
-
+    public static function validerEmailInscription($email) {
         $utilisateurService = new UtilisateurService();
-        if ($utilisateurService->courrielExistant($email)) {
+        if ($utilisateurService->recupererCourriel($email)) {
             return "Ce courriel a déjà un compte";
         }
-    
-        return null; 
+        self::validerEmail($email);
+    }
+
+    //Validation de l'email du formulaire de connexion 
+    public static function validerEmail($courriel){
+        return empty($courriel) ? "Le courriel de passe est obligatoire" : null;
+    }
+
+    //Supprime des variables de sessions 
+    public static function unsetSessionVariables($variables = []){
+        foreach ($variables as $variable) {
+            unset($_SESSION[$variable]);
+        }
     }
     
 
@@ -50,6 +57,7 @@ class ValidateurDeFormulaire {
     public static function validerMotDePasse($mdp) {
         return empty($mdp) ? "Le mot de passe est obligatoire" : null;
     }
+    
 
     // Validation du numero de telephone 
     public static function validerTelephone($telephone) {
