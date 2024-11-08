@@ -7,7 +7,7 @@
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $connexionController->connexion($_POST);
     }else {
-         $connexionController->afficherFormulaireConnexion();
+        $connexionController->afficherFormulaireConnexion();
     }
 
 ?>
