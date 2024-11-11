@@ -19,46 +19,10 @@ class InscriptionController {
         include __DIR__ . '/../Views/inscriptionView.php';
     }
 
-    // Valide les données du formulaire d'inscription
-    private function validerFormulaireInscription($donnee) {
-        $errors = [];
-        $values = [];
-
-        // Tableau des champs a valider avec leurs methodes de validation
-        $champsAValider = [
-            "nom" => "validerNom",
-            "prenom" => "validerPrenom",
-            "date_naissance" => "validerDateNaissance",
-            "courriel" => "validerEmailInscription",
-            "mot_de_passe" => "validerMotDePasse",
-            "telephone" => "validerTelephone"
-        ];
-
-        //Validation des champs en parcourant le tableau precedant
-        foreach ($champsAValider as $champs => $validationMethod) {
-            $error = ValidateurDeFormulaire::$validationMethod($donnee[$champs]);
-            if ($error) {
-                $errors[$champs] = $error;
-            } else {
-                $values[$champs] = htmlspecialchars($donnee[$champs]);
-            }
-        }
-
-        // Validation de confirmation du mot de passe
-        $error = ValidateurDeFormulaire::validerMotDePasseConfirmation($donnee["mot_de_passe"], $donnee["c_mot_de_passe"]);
-        if ($error) {
-            $errors["c_mot_de_passe"] = $error;
-        } else {
-            $values["c_mot_de_passe"] = htmlspecialchars($donnee["mot_de_passe"]);
-        }
-
-        return [$errors, $values];
-    }
-
     // Inscription de l'utilisateur après validation 
     public function inscrire($donnee) {
         try {
-            list($errors, $values) = $this->validerFormulaireInscription($donnee);
+            list($errors, $values) = ValidateurDeFormulaire::validerFormulaireInscription($donnee);
     
             if (empty($errors)) {
                 $role = "client";
@@ -89,6 +53,5 @@ class InscriptionController {
             GestionnaireErreur::redirigerVersErreurPage($e->getMessage());
         }
     }
-    
 }
 ?>

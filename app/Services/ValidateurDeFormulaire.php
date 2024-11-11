@@ -5,40 +5,17 @@ use DateTime;
 use App\Services\UtilisateurService ;
 
 class ValidateurDeFormulaire {
-    // Validation du nom
-    public static function validerNom($nom) {
-        return empty($nom) ? "Le nom est obligatoire" : null;
-    }
-
-    // Validation du prénom
-    public static function validerPrenom($prenom) {
-        return empty($prenom) ? "Le prénom est obligatoire" : null;
-    }
-
-    //Validation de la date de naissance 
-    public static function validerDateNaissance($dateNaissance) {
-        return empty($dateNaissance) ? "La date est obligatoire" : null;
+    //Verifaction de la nullite d'un champs.Retourne un message d'erreur si vide et null sino
+    private static function verifierChampsObligatoire($champs, $message){
+        return empty($champs) ? $message : null;
     }
     
-    // Validation de l'email
+    // Vealidation de l'email 
     public static function validerEmailInscription($email) {
         $utilisateurService = new UtilisateurService();
-
         return $utilisateurService->recupererCourriel($email) 
             ? "Ce courriel a déjà un compte"
-            : self::validerEmail($email);
-    }
-    
-    //Validation de l'email du formulaire de connexion 
-    public static function validerEmail($courriel){
-        return empty($courriel) ? "Le courriel est obligatoire" : null;
-    }
-
-    //Supprime des variables de sessions 
-    public static function unsetSessionVariables($variables = []){
-        foreach ($variables as $variable) {
-            unset($_SESSION[$variable]);
-        }
+            : self::verifierChampsObligatoire($email, "L'email est obligatoire");
     }
     
     // Validation du mot de passe
@@ -52,21 +29,81 @@ class ValidateurDeFormulaire {
         return null;
     }
 
-    //Validation du mot de passe  
-    public static function validerMotDePasse($mdp) {
-        return empty($mdp) ? "Le mot de passe est obligatoire" : null;
+    //Valider de tous les champs du formalaire d'inscription.
+    public static function validerFormulaireConnexion($donnee){
+        $errors =[];
+        $values = [];
+
+        //valider courriel
+        $error = self::verifierChampsObligatoire($donnee['courriel'], "Le courriel est obligatoire");
+        if ($error) {
+            $errors['courriel'] = $error ;
+        }else {
+            $values['courriel'] = htmlspecialchars($donnee['courriel'])  ;
+        }
+
+        //valider mot de passe
+        $error = self::verifierChampsObligatoire($donnee['mot_de_passe'], "Le mot de passe est obligatoire");
+        if ($error) {
+            $errors['mot_de_passe'] = $error ;
+        }else {
+            $values['mot_de_passe'] = htmlspecialchars($donnee['mot_de_passe'])  ;
+        }
+
+        return [$errors, $values ];
     }
+
+    // Valide les données du formulaire d'inscription
+    public static function validerFormulaireInscription($donnee) {
+        $errors = [];
+        $values = [];
     
-    // Validation du numero de telephone 
-    public static function validerTelephone($telephone) {
-        return empty($telephone) ? "Le numero de telephone est obligatoire" : null;
+        // Liste des champs et messages d'erreur associés
+        $champsAValider = [
+            'nom' => "Le nom est obligatoire",
+            'prenom' => "Le prénom est obligatoire",
+            'date_naissance' => "La date de naissance est obligatoire",
+            'mot_de_passe' => "Le mot de passe est obligatoire",
+            'telephone' => "Le téléphone est obligatoire"
+        ];
+    
+        // Validation des champs obligatoires
+        foreach ($champsAValider as $champs => $message) {
+            $error = self::verifierChampsObligatoire($donnee[$champs], $message);
+            if ($error) {
+                $errors[$champs] = $error;
+            } else {
+                $values[$champs] = htmlspecialchars($donnee[$champs]);
+            }
+        }
+    
+        // Validation de l'email
+        $error = self::validerEmailInscription($donnee['courriel']);
+        if ($error) {
+            $errors['courriel'] = $error;
+        } else {
+            $values['courriel'] = htmlspecialchars($donnee['courriel']);
+        }
+    
+        // Validation de la confirmation du mot de passe
+        $error = self::validerMotDePasseConfirmation($donnee["mot_de_passe"], $donnee["c_mot_de_passe"]);
+        if ($error) {
+            $errors["c_mot_de_passe"] = $error;
+        } else {
+            $values["mot_de_passe"] = htmlspecialchars($donnee["mot_de_passe"]);
+        }
+    
+        return [$errors, $values];
     }
 
-    //Validation du role 
-    public static function validerRole($role){
-        return empty($role) ? "Le role est obligatoire" : null;
-    }
+    //Supprime des variables de sessions 
+    public static function unsetSessionVariables($variables = []){
+        foreach ($variables as $variable) {
+            unset($_SESSION[$variable]);
+        }
+    }    
 
+    //Affichage des erruers d'une erreur a son champs dans le formulaire
     public static function erreurAffichage($input){
         if (!empty($input)): ?>
             <div class="invalid-feedback">
@@ -74,4 +111,5 @@ class ValidateurDeFormulaire {
             </div>
         <?php endif; 
     }
+    
 }
