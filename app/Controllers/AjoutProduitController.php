@@ -4,6 +4,7 @@
     use App\Services\ProduitService; 
     use App\Services\GestionnaireErreur;
     use App\Services\ValidateurDeFormulaire;
+use Exception;
 
     class AjoutProduitController{
         private $produitService;
@@ -19,15 +20,24 @@
         }
 
         public function ajouter($donnee,$fichiers){
-            list($errors, $values) = ValidateurDeFormulaire::validerFormulaireAjoutProduit($donnee,$fichiers);
-            if (empty($errors)) {
-                
+            try {
+                $image=$fichiers['image'];
+                list($errors, $values) = ValidateurDeFormulaire::validerFormulaireAjoutProduit($donnee,$fichiers);
+                if (empty($errors)) {
+                    $this->produitService->ajoutCompletProduit($donnee,$image);
+                    ValidateurDeFormulaire::unsetSessionVariables(['errors','values']);
+                    header("Location: ../public/store.php");
+                    exit;
+                }
+                else {
+                    $_SESSION['errors'] = $errors;
+                    $_SESSION['values'] = $values;
+                    $this->afficherFormulaireAjoutProduit($errors,$values);
+                }
+            } catch (Exception $e) {
+                GestionnaireErreur::redirigerVersErreurPage($e->getMessage());
             }
-            else {
-                $_SESSION['errors'] = $errors;
-                $_SESSION['values'] = $values;
-                $this->afficherFormulaireAjoutProduit($errors,$values);
-            }
+            
         }       
     }
 

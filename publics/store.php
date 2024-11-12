@@ -1,3 +1,3 @@
 <?php 
-    echo $_SESSION['utilisateur'] ;
+    echo "Bienvenue";
 ?>
