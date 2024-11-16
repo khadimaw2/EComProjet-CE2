@@ -3,6 +3,7 @@ namespace App\Services;
 
 require_once __DIR__ . '/../../config/config.php';
 use Exception;
+use PDO;
 
 class ProduitService {
 
@@ -78,6 +79,24 @@ class ProduitService {
             throw new Exception("Erreur lors de l'ajout complet du produit : " . $e->getMessage());
         }
     }
-    
+
+    //Recuperer tous les produits de la base de donnée
+    public function recupererTousLesProduits(){
+        try {
+            $sql = "SELECT p.*, i.chemin AS image_chemin, c.nom_categorie 
+                    FROM categorie c 
+                    JOIN produit p ON c.id_categorie = p.id_categorie  
+                    LEFT JOIN image i ON p.id_produit = i.id_produit";
+
+            $connexion = Database::recupererConnexion();
+            $requete = $connexion->prepare($sql);
+            $requete->execute();
+            $produits = $requete->fetchAll(PDO::FETCH_ASSOC);
+            return $produits;
+
+        } catch (Exception $e) {
+            throw new Exception ("Erreur lors de la récupération des produits : " . $e->getMessage());
+        }
+    }   
 }
 ?>

@@ -4,13 +4,12 @@
     use App\Services\ProduitService; 
     use App\Services\GestionnaireErreur;
     use App\Services\ValidateurDeFormulaire;
-use Exception;
-
+    use Exception;
+    
     class AjoutProduitController{
         private $produitService;
 
-        public function __construct()
-        {
+        public function __construct(){
             $this->produitService = new ProduitService() ;
         }
 
@@ -19,6 +18,7 @@ use Exception;
             include __DIR__."/../Views/ajoutProduitView.php";
         }
 
+        //Controlle et ajout des données d'un produit
         public function ajouter($donnee,$fichiers){
             try {
                 $image=$fichiers['image'];
@@ -40,6 +40,4 @@ use Exception;
             
         }       
     }
-
-
 ?>

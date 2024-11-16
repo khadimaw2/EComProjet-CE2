@@ -10,4 +10,5 @@
     } else {
         $inscriptionController->afficherFormulaireInscription(); // Afficher le formulaire d'inscription
     }
+       
 ?>

@@ -1,10 +1,12 @@
 <?php
-namespace App\Controllers ; 
+namespace App\Controllers ;
 
+use App\Models\Utilisateur;
 use App\Services\UtilisateurService ; 
 use App\Services\ValidateurDeFormulaire ; 
 use App\Services\GestionnaireErreur;
 use Exception;
+session_start();
 
     class ConnexionController{
         private $utilisateurService ; 
@@ -31,10 +33,13 @@ use Exception;
                         $errors['echecAuth'] = "Le mot de passe ou le courriel est incorrect";
                         $this->afficherFormulaireConnexion($errors, []);
                     } else {
-                        $utilisateur = $this->utilisateurService->recupererInfosUtilisateur($values['courriel']);
+                        $utilisateur = Utilisateur::InitialiserAvecTableau($this->utilisateurService->recupererInfosUtilisateur($values['courriel'])); 
+                        $utilisateur->setMotDePasse('');
                         $_SESSION['utilisateur'] = $utilisateur;
+                        var_dump($_SESSION['utilisateur']);
                         ValidateurDeFormulaire::unsetSessionVariables(['errors','values']);
                         header("Location: ../publics/store.php");
+                        exit;
                     }
                 }else {
                     // Stocke erreurs et valeurs pour ré-affichage
@@ -47,6 +52,10 @@ use Exception;
             }
             
         }
-    }
 
+        public function deconnexion(): void {
+            unset($_SESSION['utilisateur']);
+        }
+        
+    }
 ?>

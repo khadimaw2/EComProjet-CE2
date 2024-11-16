@@ -19,7 +19,7 @@
 
                 <!-- Element du navbar d'un client -->
                 <?php
-                    if(isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['description'] == "client") { ?>
+                    if(isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']->getRole() == "client") { ?>
                         <li class="nav-item">
                             <a class="nav-link text-light" href="listeCommandeUtilisateur.php">Mes commandes</a>
                         </li>
@@ -27,7 +27,7 @@
                 <!-- Element du navbar d'un admin -->
                 <?php 
                     }
-                    elseif(isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']['description'] == "admin") { ?>
+                    elseif(isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']->getRole() == "admin") { ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Gestion produits

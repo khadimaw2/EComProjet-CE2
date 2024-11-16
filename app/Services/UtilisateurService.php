@@ -108,9 +108,9 @@ class UtilisateurService {
             if ($courrielConfirme) {
                 $motDePasseHash = $this->recupererMotDePasse($courrielConfirme);               
                 return password_verify($motDePassefourni, $motDePasseHash);
-            } else {
-                return false;
             }
+            return false;
+            
         } catch (Exception $e) {
             throw new Exception("Erreur lors de l'authentification de l'utilisateur : " . $e->getMessage());
         }
@@ -119,20 +119,33 @@ class UtilisateurService {
     //Recuperer les informations d'un utilisateur(Confirmé) a partir de son courriel
     public function recupererInfosUtilisateur(string $courriel): array {
         try {
-            $sql = "SELECT * FROM Utilisateur WHERE courriel = :courriel";
+
+            $sql = "SELECT u.*, r.description FROM Utilisateur u
+                    JOIN Role_utilisateur ru ON u.id_utilisateur = ru.id_utilisateur
+                    JOIN Role r ON ru.id_role = r.id_role
+                    WHERE courriel = :courriel";
             $connexion = Database::recupererConnexion();
             $requette = $connexion->prepare($sql);
             $requette->execute([':courriel' => $courriel]);
             
-            $resultat = $requette->fetch(PDO::FETCH_ASSOC);
-    
-            if (!$resultat) {
+            $utilisateur = $requette->fetch(PDO::FETCH_ASSOC);
+            if (!$utilisateur) {
                 throw new Exception("Ce courriel n'existe pas dans la base de données.");
             }
+
+            $adressService = new AdressService();
+            $utilisateur['adresse'] = $adressService->recupererChaineAdressUtilisateur($utilisateur['id_utilisateur']);
     
-            return $resultat;
+            return $utilisateur;
         } catch (Exception $e) {
             throw new Exception("Erreur lors de la récupération des informations de l'utilisateur : " . $e->getMessage());
+        }
+    }
+
+    public function deconnexion(){
+        if(isset($_SESSION['utilisateur'])){
+            unset($_SESSION['utilisateur']);
+            header("Location: ../publics/connexion.php");
         }
     }
     

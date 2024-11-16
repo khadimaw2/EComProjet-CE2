@@ -25,20 +25,11 @@ class InscriptionController {
             list($errors, $values) = ValidateurDeFormulaire::validerFormulaireInscription($donnee);
     
             if (empty($errors)) {
-                $role = "client";
-                $utilisateur = new Utilisateur(
-                    $values['nom'],
-                    $values['prenom'],
-                    $donnee['date_naissance'], 
-                    $values['courriel'],
-                    password_hash($values['mot_de_passe'], PASSWORD_DEFAULT), 
-                    $values['telephone'],
-                    $role
-                );
-    
+                $donnee['description'] = "client"; //la description du role de l'utilisateur
+                $utilisateur =  Utilisateur::InitialiserAvecTableau($donnee);
                 $this->utilisateurService->inscrireUtilisateur($utilisateur);
                 ValidateurDeFormulaire::unsetSessionVariables(['errors','values']);
-                header("Location: ../public/connexion.php");
+                header("Location: ../publics/connexion.php");
                 exit;
             } 
             else {

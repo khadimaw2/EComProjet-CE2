@@ -1,6 +1,6 @@
 <?php
-use App\Services\ValidateurDeFormulaire;
 require_once 'header.php';
+use App\Services\ValidateurDeFormulaire;
 ?>
 
 <body>
