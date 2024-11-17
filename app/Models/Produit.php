@@ -1,25 +1,43 @@
 <?php 
     namespace App\Models; 
 
-    class Produits {
-        private $id; 
-        private $nom; 
+    class Produit {
+        private int $id; 
+        private string $nom; 
         private $prixUnitaire; 
-        private $description;
-        private $courteDescription;
-        private $quantite; 
-        private $id_categorie;
+        private string $description;
+        private string $courteDescription;
+        private string $quantite; 
+        private int $idCategorie;
+        private string $nomCategorie;
+        private string $cheminImage ; 
     
         // Constructeur
-        public function __construct($id=null,$nom, $prixUnitaire, $description, $courteDescription, $quantite, $id_categorie) {
+        public function __construct($id,$nom, $prixUnitaire, $description, $courteDescription, $quantite, $idCategorie,$nomCategorie,$cheminImage) {
+            $this->id = $id ;
             $this->nom = $nom;
             $this->prixUnitaire = $prixUnitaire;
             $this->description = $description;
             $this->courteDescription = $courteDescription;
             $this->quantite = $quantite;
-            $this->id_categorie = $id_categorie;
-            $this->$id = $id ;
+            $this->idCategorie = $idCategorie;
+            $this->nomCategorie = $nomCategorie;
+            $this->cheminImage = $cheminImage ; 
+        }
 
+            // Méthode statique pour créer un produit à partir d'un tableau
+        public static function InitialiserAvecTableau(array $donnee): self {
+            return new self(
+                $donnee['id'] ?? 0,
+                $donnee['nom'], 
+                $donnee['prix_unitaire'], 
+                $donnee['description'], 
+                $donnee['courte_description'], 
+                $donnee['quantite'], 
+                $donnee['id_categorie'] ?? 0,
+                $donnee['nom_categorie'] ??  '',
+                $donnee['chemin_image'] ??  ''
+            );
         }
     
         // Getters
@@ -48,7 +66,15 @@
         }
     
         public function getIdCategorie() {
-            return $this->id_categorie;
+            return $this->idCategorie;
+        }
+
+        public function getNomCategorie() {
+            return $this->nomCategorie;
+        }
+
+        public function getcheminImage() {
+            return $this->cheminImage;
         }
     
         // Setters
@@ -76,8 +102,8 @@
             $this->quantite = $quantite;
         }
     
-        public function setIdCategorie($id_categorie) {
-            $this->id_categorie = $id_categorie;
+        public function setIdCategorie($idCategorie) {
+            $this->idCategorie = $idCategorie;
         }
     }
 

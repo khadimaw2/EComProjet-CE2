@@ -61,11 +61,11 @@
               <?php foreach ($produits as $produit) : ?>
                 <div class="col-md-4 mb-4">
                   <div class="card product-card">
-                    <img src="<?= !empty($produit['chemin']) ? "../ressources/".$produit['image_chemin'] : '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
+                    <img src="<?= !empty($produit->getcheminImage()) ? "../ressources/".$produit->getcheminImage() : '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
                     <div class="card-body">
-                      <h5 class="card-title"><?= $produit['nom'].' '.$produit['prix_unitaire'].'$'; ?></h5>
-                      <p class="card-text"><?= $produit['courte_description']; ?></p>
-                      <a href="detailProduit.php?id=<?= $produit['id_produit']; ?>" class="btn btn-success">Voir Details</a>
+                      <h5 class="card-title"><?= $produit->getNom().' '.$produit->getPrixUnitaire().'$'; ?></h5>
+                      <p class="card-text"><?= $produit->getCourteDescription(); ?></p>
+                      <a href="detailProduit.php?id=<?= $produit->getId(); ?>" class="btn btn-success">Voir Details</a>
                     </div>
                   </div>
                 </div>
@@ -80,14 +80,14 @@
         <div class="tab-pane fade" id="category2" role="tabpanel" aria-labelledby="categorieCapillaire-tab">
           <div class="row">
             <?php foreach ($produits as $produit) : ?>
-              <?php if ($produit['nom_categorie'] == 'Capillaire') : ?>
+              <?php if ($produit->getNomCategorie()=='Capillaire') : ?>
                 <div class="col-md-4 mb-4">
                   <div class="card product-card">
-                    <img src="<?= !empty($produit['chemin']) ? REPERTOIRE_RESSOURCE.$produit['chemin'] : '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
+                    <img src="<?= !empty($produit->getcheminImage()) ? REPERTOIRE_RESSOURCE.$produit->getcheminImage(): '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
                     <div class="card-body">
-                      <h5 class="card-title"><?= $produit['nom'].' '.$produit['prix_unitaire'].'$'; ?></h5>
-                      <p class="card-text"><?= $produit['courte_description']; ?></p>
-                      <a href="detailProduit.php?id=<?= $produit['id_produit']; ?>" class="btn btn-success">Voir Details</a>
+                      <h5 class="card-title"><?= $produit->getNom().' '.$produit->getPrixUnitaire().'$'; ?></h5>
+                      <p class="card-text"><?= $produit->getCourteDescription(); ?></p>
+                      <a href="detailProduit.php?id=<?= $produit->getId(); ?>" class="btn btn-success">Voir Details</a>
                     </div>
                   </div>
                 </div>
@@ -100,14 +100,14 @@
         <div class="tab-pane fade" id="category3" role="tabpanel" aria-labelledby="categorieCorporelle">
           <div class="row">
             <?php foreach ($produits as $produit) : ?>
-              <?php if ($produit['nom_categorie'] == 'Corporelle') : ?>
+              <?php if ($produit->getNomCategorie() == 'Corporelle') : ?>
                 <div class="col-md-4 mb-4">
                   <div class="card product-card">
-                    <img src="<?= !empty($produit['chemin']) ? REPERTOIRE_RESSOURCE.$produit['chemin'] : '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
+                    <img src="<?= !empty($produit->getcheminImage()) ? REPERTOIRE_RESSOURCE.$produit->getcheminImage() : '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
                     <div class="card-body">
-                      <h5 class="card-title"><?= $produit['nom'].' '.$produit['prix_unitaire'].'$'; ?></h5>
-                      <p class="card-text"><?= $produit['courte_description']; ?></p>
-                      <a href="detailProduit.php?id=<?= $produit['id_produit']; ?>" class="btn btn-success">Voir Details</a>
+                    <h5 class="card-title"><?= $produit->getNom().' '.$produit->getPrixUnitaire().'$'; ?></h5>
+                    <p class="card-text"><?= $produit->getCourteDescription(); ?></p>
+                      <a href="detailProduit.php?id=<?= $produit->getId(); ?>" class="btn btn-success">Voir Details</a>
                     </div>
                   </div>
                 </div>

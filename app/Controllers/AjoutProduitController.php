@@ -1,7 +1,8 @@
 <?php 
     namespace App\Controllers;
 
-    use App\Services\ProduitService; 
+use App\Models\Produit;
+use App\Services\ProduitService; 
     use App\Services\GestionnaireErreur;
     use App\Services\ValidateurDeFormulaire;
     use Exception;
@@ -24,9 +25,10 @@
                 $image=$fichiers['image'];
                 list($errors, $values) = ValidateurDeFormulaire::validerFormulaireAjoutProduit($donnee,$fichiers);
                 if (empty($errors)) {
-                    $this->produitService->ajoutCompletProduit($donnee,$image);
+                    $produit = Produit::InitialiserAvecTableau($donnee);
+                    $this->produitService->ajoutCompletProduit($produit,$image);
                     ValidateurDeFormulaire::unsetSessionVariables(['errors','values']);
-                    header("Location: ../public/store.php");
+                    header("Location: ../publics/store.php");
                     exit;
                 }
                 else {

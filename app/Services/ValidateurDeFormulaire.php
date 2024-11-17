@@ -142,7 +142,7 @@ class ValidateurDeFormulaire {
             "quantite" => "La quantité disponible du produit est obligatoire",
             "courte_description" => "La courte description du produit est obligatoire",
             "description" => "La description du produit est obligatoire",
-            "categorie" => "La catégorie du produit est obligatoire"
+            "id_categorie" => "La catégorie du produit est obligatoire"
         ];
     
         foreach ($champsAValider as $champs => $message) {

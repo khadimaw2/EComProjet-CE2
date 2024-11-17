@@ -2,6 +2,8 @@
 namespace App\Services;
 
 require_once __DIR__ . '/../../config/config.php';
+
+use App\Models\Produit;
 use Exception;
 use PDO;
 
@@ -46,19 +48,19 @@ class ProduitService {
     }
 
     // Enregistrer les informations du produit dans la table produit de la BD
-    private function enregistrerProduitInfo($infoProduit) {
+    private function enregistrerProduitInfo(Produit $produit) {
         try {
             $sql = "INSERT INTO Produit(nom, quantite, courte_description, description, prix_unitaire, id_categorie) 
                     VALUES (:nom, :quantite, :courte_description, :description, :prix_unitaire, :id_categorie)";
             $connexion = Database::recupererConnexion();
             $requete = $connexion->prepare($sql);
             $requete->execute([
-                ':nom' => $infoProduit['nom'],
-                ':quantite' => $infoProduit['quantite'],
-                ':courte_description' => $infoProduit['courte_description'],
-                ':description' => $infoProduit['description'],
-                ':prix_unitaire' => $infoProduit['prix_unitaire'],
-                ':id_categorie' => $infoProduit['categorie'],
+                ':nom' => $produit->getNom() ,
+                ':quantite' => $produit->getQuantite() ,
+                ':courte_description' => $produit->getCourteDescription(),
+                ':description' => $produit->getDescription() ,
+                ':prix_unitaire' => $produit->getPrixUnitaire() ,
+                ':id_categorie' =>$produit->getIdCategorie() ,
             ]);
             return $connexion->lastInsertId();
         } catch (Exception $e) {
@@ -67,11 +69,11 @@ class ProduitService {
     }
 
     // Télécharger et enregistrer respectivement l'image et les informations d'un produit et de son image dans la BD
-    public function ajoutCompletProduit($infoProduit, $image) {
+    public function ajoutCompletProduit($produit, $image) {
         try {
             $connexion = Database::recupererConnexion();
             $connexion->beginTransaction(); 
-            $idProduit = $this->enregistrerProduitInfo($infoProduit);
+            $idProduit = $this->enregistrerProduitInfo($produit);
             $this->telechargerEtEnregistrerImageInfo($image, $idProduit); 
             $connexion->commit();
         } catch (Exception $e) {
@@ -80,23 +82,48 @@ class ProduitService {
         }
     }
 
-    //Recuperer tous les produits de la base de donnée
-    public function recupererTousLesProduits(){
+    public function recupererTousLesProduits(): array {
         try {
-            $sql = "SELECT p.*, i.chemin AS image_chemin, c.nom_categorie 
+            $sql = "SELECT p.id_produit AS id, p.nom AS nom, p.prix_unitaire AS prix_unitaire, 
+                           p.description AS description, p.courte_description AS courte_description, 
+                           p.quantite AS quantite, p.id_categorie AS id_categorie, 
+                           c.nom_categorie AS nom_categorie, i.chemin AS chemin_image
                     FROM categorie c 
-                    JOIN produit p ON c.id_categorie = p.id_categorie  
+                    JOIN produit p ON p.id_categorie = c.id_categorie
                     LEFT JOIN image i ON p.id_produit = i.id_produit";
-
+    
             $connexion = Database::recupererConnexion();
             $requete = $connexion->prepare($sql);
             $requete->execute();
-            $produits = $requete->fetchAll(PDO::FETCH_ASSOC);
+    
+            $produitsDonnee = $requete->fetchAll(PDO::FETCH_ASSOC);
+    
+            // Transformer chaque tableau associatif en instance de Produit
+            $produits = array_map(fn($donnee) => Produit::InitialiserAvecTableau($donnee), $produitsDonnee);
+    
             return $produits;
-
         } catch (Exception $e) {
-            throw new Exception ("Erreur lors de la récupération des produits : " . $e->getMessage());
+            throw new Exception("Erreur lors de la récupération des produits : " . $e->getMessage());
         }
-    }   
+    }
+
+    //Recuperer tous les produits de la base de donnée
+    // public function recupererTousLesProduits(){
+    //     try {
+    //         $sql = "SELECT p.*, i.chemin AS image_chemin, c.nom_categorie 
+    //                 FROM categorie c 
+    //                 JOIN produit p ON c.id_categorie = p.id_categorie  
+    //                 LEFT JOIN image i ON p.id_produit = i.id_produit";
+
+    //         $connexion = Database::recupererConnexion();
+    //         $requete = $connexion->prepare($sql);
+    //         $requete->execute();
+    //         $produits = $requete->fetchAll(PDO::FETCH_ASSOC);
+    //         return $produits;
+
+    //     } catch (Exception $e) {
+    //         throw new Exception ("Erreur lors de la récupération des produits : " . $e->getMessage());
+    //     }
+    // }   
 }
 ?>

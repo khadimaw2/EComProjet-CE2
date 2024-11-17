@@ -71,9 +71,9 @@ require_once 'header.php';
             </div>
 
             <div class="input-group mb-3">
-                <select class="form-select <?php echo !empty($errors["categorie"]) ? 'is-invalid' : ''; ?>" id="inputGroupSelect01" name ="categorie">
+                <select class="form-select <?php echo !empty($errors["categorie"]) ? 'is-invalid' : ''; ?>" id="inputGroupSelect01" name ="id_categorie">
                     <option selected>Categorie</option>
-                    <option value=1 <?php echo (isset($values["categorie"]) && $values["categorie"] == 1) ? 'selected' :''; ?>>Soin de corps</option>
+                    <option value=1 <?php echo (isset($values["categorie"]) && $values["categorie"] ==1) ? 'selected' :''; ?>>Soin de corps</option>
                     <option value=2 <?php echo (isset($values["categorie"]) && $values["categorie"] == 2) ? 'selected' :''; ?>>Soin de cheveux</option>
                 </select>
                 <?php if (isset($errors["categorie"])) {

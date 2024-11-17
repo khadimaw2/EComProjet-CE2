@@ -15,7 +15,6 @@
 
     <div class="d-grid gap-2 mt-auto">
         <a class="btn btn-success w-100" href='modificationInfoPers.php'>Modifier Info</a>
-        <a class="btn btn-secondary w-100" href='#'>Modifier Mdp</a>
         <a class="btn btn-danger w-100" href="../publics/deconnexion.php">Deconnexion</a>
     </div>
 </div>
