@@ -39,6 +39,11 @@
                 $donnee['chemin_image'] ??  ''
             );
         }
+
+        public static function creerObjetVide(): self {
+            return new self(0, '', 0, '', '', '', 0, '', '');
+        }
+        
     
         // Getters
         public function getId() {

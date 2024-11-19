@@ -2,12 +2,13 @@
 use App\Services\ValidateurDeFormulaire;
 require_once 'header.php';
 ?>
+
 <body>
     <div class="container mt-5">
         <div class="container">
             <div class="row">
                 <div class="col-12 text-center my-4">
-                <h1 class="page-title text-success">Ajout de produit</h1>
+                <h1 class="page-title text-success">Ajouter produit</h1>
                 </div>
             </div>
         </div>
@@ -83,6 +84,6 @@ require_once 'header.php';
 
             <input type="submit" class="btn btn-success" name="btn-ajout" value="Ajouter un produit">
         </form>
-    <div>
+    </div>
 </body>
 </html>

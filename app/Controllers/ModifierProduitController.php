@@ -6,8 +6,8 @@
     use App\Services\GestionnaireErreur;
     use App\Services\ValidateurDeFormulaire;
     use Exception;
-    
-    class AjoutProduitController{
+
+    class ModifierProduitController{
         private $produitService;
 
         public function __construct(){
@@ -15,31 +15,33 @@
         }
 
         //Affiche la vue du formulaire 
-        public function afficherFormulaireAjoutProduit($errors =[], $values = []){
-            include __DIR__."/../Views/ajoutProduitView.php";
+        public function afficherFormulaireModifierProduit($errors =[], $values = [],Produit $produitAModifie){
+            include __DIR__."/../Views/modifierProduitView.php";
         }
 
-        //Controlle et ajout des données d'un produit
-        public function ajouter($donnee,$fichiers){
+        //Modifie les informations d'un produit ainsi que son image 
+        public function modifier($donnee,$fichiers,$cheminAncienneImage){
             try {
                 $image=$fichiers['image'];
                 list($errors, $values) = ValidateurDeFormulaire::validerFormulaireAjoutProduit($donnee,$fichiers);
                 if (empty($errors)) {
                     $produit = Produit::InitialiserAvecTableau($donnee);
-                    $this->produitService->ajoutCompletProduit($produit,$image);
+                    $this->produitService->majProduitComplet($produit,$image,$cheminAncienneImage);
                     ValidateurDeFormulaire::unsetSessionVariables(['errors','values']);
                     header("Location: ../publics/store.php");
                     exit;
-                }
-                else {
+                }else {
                     $_SESSION['errors'] = $errors;
                     $_SESSION['values'] = $values;
-                    $this->afficherFormulaireAjoutProduit($errors,$values);
+                    $produitAModifie = Produit::creerObjetVide();
+                    $this->afficherFormulaireModifierProduit($errors,$values,$produitAModifie);
                 }
             } catch (Exception $e) {
                 GestionnaireErreur::redirigerVersErreurPage($e->getMessage());
             }
-            
-        }       
+                        
+        } 
     }
+
+
 ?>

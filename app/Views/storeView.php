@@ -61,7 +61,7 @@
               <?php foreach ($produits as $produit) : ?>
                 <div class="col-md-4 mb-4">
                   <div class="card product-card">
-                    <img src="<?= !empty($produit->getcheminImage()) ? "../ressources/".$produit->getcheminImage() : '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
+                    <img src="<?= empty($produit->getcheminImage()) ? "../ressources/".$produit->getcheminImage() : '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
                     <div class="card-body">
                       <h5 class="card-title"><?= $produit->getNom().' '.$produit->getPrixUnitaire().'$'; ?></h5>
                       <p class="card-text"><?= $produit->getCourteDescription(); ?></p>
@@ -83,7 +83,7 @@
               <?php if ($produit->getNomCategorie()=='Capillaire') : ?>
                 <div class="col-md-4 mb-4">
                   <div class="card product-card">
-                    <img src="<?= !empty($produit->getcheminImage()) ? REPERTOIRE_RESSOURCE.$produit->getcheminImage(): '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
+                    <img src="<?= empty($produit->getcheminImage()) ? "../ressources/".$produit->getcheminImage(): '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
                     <div class="card-body">
                       <h5 class="card-title"><?= $produit->getNom().' '.$produit->getPrixUnitaire().'$'; ?></h5>
                       <p class="card-text"><?= $produit->getCourteDescription(); ?></p>
@@ -103,7 +103,7 @@
               <?php if ($produit->getNomCategorie() == 'Corporelle') : ?>
                 <div class="col-md-4 mb-4">
                   <div class="card product-card">
-                    <img src="<?= !empty($produit->getcheminImage()) ? REPERTOIRE_RESSOURCE.$produit->getcheminImage() : '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
+                    <img src="<?= empty($produit->getcheminImage()) ? "../ressources/".$produit->getcheminImage() : '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
                     <div class="card-body">
                     <h5 class="card-title"><?= $produit->getNom().' '.$produit->getPrixUnitaire().'$'; ?></h5>
                     <p class="card-text"><?= $produit->getCourteDescription(); ?></p>
