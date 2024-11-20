@@ -32,17 +32,15 @@
                             <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Gestion produits
                             </a>
-
-                            <ul class="dropdown-menu">
-                                <li><a class="dropdown-item" href="ajoutProduit.php">Ajout produit</a></li>
-                                <li><a class="dropdown-item" href="listeProduits.php">Liste des produits</a></li>
+                            <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                <li><a class="dropdown-item" href="../publics/ajout-produit.php">Ajout produit</a></li>
+                                <li><a class="dropdown-item" href="../publics/liste-produits.php">Liste des produits</a></li>
                             </ul>
-
                         </li>
 
-                    <li class="nav-item"><a class="nav-link text-light" href="listeUtilisateurs.php">Gestion utilisateurs</a></li>
+                        <li class="nav-item"><a class="nav-link text-light" href="listeUtilisateurs.php">Gestion utilisateurs</a></li>
 
-                    <li class="nav-item"><a class="nav-link text-light" href="listeToutesLesCommandes.php">Gestion Commandes</a></li>
+                        <li class="nav-item"><a class="nav-link text-light" href="listeToutesLesCommandes.php">Gestion Commandes</a></li>
 
                 <?php } ?>
             </ul>
@@ -63,7 +61,7 @@
             <!-- Elements du navbar standard  d'un utilisateur non connecté-->
             <?php }
                 else {?>
-                    <a class="btn btn-dark" href="connexion.php">Se connecter</a>
+                    <a class="btn btn-dark" href="../publics/connexion.php">Se connecter</a>
             <?php } ?>
         </div>
     </div>

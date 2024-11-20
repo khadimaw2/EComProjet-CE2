@@ -13,8 +13,8 @@
             $idProduit = $_GET['id'] ;
             $produitAModifier = $produitService->recupererProduitParId($idProduit);
 
-            ($_SERVER['REQUEST_METHOD'] === 'POST') ? 
-            :$modifierProduitController->afficherFormulaireModifierProduit($errors =[], $values = [],$produitAModifie);
+            ($_SERVER['REQUEST_METHOD'] === 'POST') ? $modifierProduitController->modifier($_POST,$_FILES,$produitAModifier)
+            :$modifierProduitController->afficherFormulaireModifierProduit($errors =[], $values = [],$produitAModifier);
         }else{
             throw new Exception("Id du produit non specifie");
         }   

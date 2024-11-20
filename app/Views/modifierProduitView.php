@@ -12,12 +12,20 @@ use App\Services\ValidateurDeFormulaire;
             </div>
         </div>
 
+        <?php if (isset($errors["echecModification"])) {?>
+            <div class="row">
+                <div class="alert alert-danger col-12 text-center my-4" role="alert"> 
+                    <?php echo $errors["echecModification"];?>
+                </div>
+            </div>
+        <?php } ?> 
+
         <form method="post" enctype="multipart/form-data">
             <div class="mb-3">
                 <input type="text" 
                        class="form-control <?php echo !empty($errors["nom"]) ? 'is-invalid' : ''; ?>" 
                        placeholder="Entrez le nom du produit" 
-                       value="<?php echo htmlspecialchars($values["nom"] ?? $produit->getNom()); ?>" 
+                       value="<?php echo htmlspecialchars($values["nom"] ?? $produitAModifier->getNom()); ?>" 
                        id="nom" 
                        name="nom">
                 <?php 
@@ -31,7 +39,7 @@ use App\Services\ValidateurDeFormulaire;
                 <input type="number" 
                        class="form-control <?php echo !empty($errors["prix_unitaire"]) ? 'is-invalid' : ''; ?>" 
                        placeholder="Entrez le prix unitaire" 
-                       value="<?php echo htmlspecialchars($values["prix_unitaire"] ?? $produit->getPrixUnitaire()); ?>" 
+                       value="<?php echo htmlspecialchars($values["prix_unitaire"] ?? $produitAModifier->getPrixUnitaire()); ?>" 
                        id="prix_unitaire" 
                        name="prix_unitaire">
                 <?php 
@@ -46,7 +54,7 @@ use App\Services\ValidateurDeFormulaire;
                        min="0" 
                        class="form-control <?php echo !empty($errors["quantite"]) ? 'is-invalid' : ''; ?>" 
                        placeholder="Entrez la quantité" 
-                       value="<?php echo htmlspecialchars($values["quantite"] ?? $produit->getQuantite()); ?>" 
+                       value="<?php echo htmlspecialchars($values["quantite"] ?? $produitAModifier->getQuantite()); ?>" 
                        id="quantite" 
                        name="quantite">
                 <?php 
@@ -66,8 +74,8 @@ use App\Services\ValidateurDeFormulaire;
                         ValidateurDeFormulaire::erreurAffichage($errors["image"]);
                     }
                 ?>
-                <?php if (!empty($produit->getcheminImage())): ?>
-                    <img src="<?= htmlspecialchars('../ressources/'.$produit->getcheminImage()); ?>" alt="Image du produit" style="max-width: 100px; max-height: 100px; margin-top: 10px;">
+                <?php if (!empty($produitAModifier->getcheminImage())): ?>
+                    <img src="<?= htmlspecialchars('../ressources/'.$produitAModifier->getcheminImage()); ?>" alt="Image du produit" style="max-width: 100px; max-height: 100px; margin-top: 10px;">
                 <?php endif; ?>
             </div>
 
@@ -75,7 +83,7 @@ use App\Services\ValidateurDeFormulaire;
                 <textarea class="form-control <?php echo !empty($errors["courte_description"]) ? 'is-invalid' : ''; ?>" 
                           placeholder="Entrez la courte description" 
                           name="courte_description" 
-                          id="courte_description"><?php echo htmlspecialchars($values["courte_description"] ?? $produit->getCourteDescription()); ?></textarea>
+                          id="courte_description"><?php echo htmlspecialchars($values["courte_description"] ?? $produitAModifier->getCourteDescription()); ?></textarea>
                 <label for="courte_description">Courte description</label>
                 <?php 
                     if (isset($errors["courte_description"])) {
@@ -88,7 +96,7 @@ use App\Services\ValidateurDeFormulaire;
                 <textarea class="form-control <?php echo !empty($errors["description"]) ? 'is-invalid' : ''; ?>" 
                           placeholder="Entrez la description" 
                           name="description" 
-                          id="description"><?php echo htmlspecialchars($values["description"] ?? $produit->getDescription()); ?></textarea>
+                          id="description"><?php echo htmlspecialchars($values["description"] ?? $produitAModifier->getDescription()); ?></textarea>
                 <label for="description">Description</label>
                 <?php 
                     if (isset($errors["description"])) {
@@ -102,8 +110,8 @@ use App\Services\ValidateurDeFormulaire;
                         id="inputGroupSelect01" 
                         name="id_categorie">
                     <option selected>Categorie</option>
-                    <option value=1 <?php echo (isset($values["id_categorie"]) && $values["id_categorie"] == 1) || $produit->getIdCategorie() == 1 ? 'selected' : ''; ?>>Soin de corps</option>
-                    <option value=2 <?php echo (isset($values["id_categorie"]) && $values["id_categorie"] == 2) || $produit->getIdCategorie() == 2 ? 'selected' : ''; ?>>Soin de cheveux</option>
+                    <option value=1 <?php echo (isset($values["id_categorie"]) && $values["id_categorie"] == 1) || $produitAModifier->getIdCategorie() == 1 ? 'selected' : ''; ?>>Soin de corps</option>
+                    <option value=2 <?php echo (isset($values["id_categorie"]) && $values["id_categorie"] == 2) || $produitAModifier->getIdCategorie() == 2 ? 'selected' : ''; ?>>Soin de cheveux</option>
                 </select>
                 <?php 
                     if (isset($errors["categorie"])) {

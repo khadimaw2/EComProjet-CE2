@@ -6,11 +6,12 @@ require_once __DIR__ . '/../../config/config.php';
 use App\Models\Produit;
 use Exception;
 use PDO;
+use PDOException;
 
 class ProduitService {
 
     // Enregistre les informations d'une image dans la table image de la BD
-    private function enregistrerImageInfo($cheminImage,$idProduit) {
+    private function enregistrerImageInfo($cheminImage, $idProduit) {
         try {
             $sql = "INSERT INTO image(chemin, id_produit) VALUES (:chemin, :idProduit)";
             $connexion = Database::recupererConnexion();
@@ -19,28 +20,25 @@ class ProduitService {
                 ':chemin' => $cheminImage,
                 ':idProduit' => $idProduit
             ]);
-        } catch (Exception $e) {
-            throw new Exception("Erreur lors de l'enregistrement des informations de l'image : " . $e->getMessage());
+        } catch (PDOException $e) {
+            throw new Exception("Erreur PDO lors de l'enregistrement des informations de l'image : " . $e->getMessage());
         }
     }
 
     // Télécharge l'image dans le dossier images-produit et retourne son chemin relatif
     private function telechargerImage($image) : string {
         try {
-            $imageName = basename($image['name']);
-            $cheminRelatifImage = "images-produit/".$imageName;
-            $imageDestination = '../ressources/'.$cheminRelatifImage;
-           
-            $src = $image['tmp_name'];
-            
-            if (move_uploaded_file($src, $imageDestination)) {
-                $cheminImage =  $cheminRelatifImage;
-                return $cheminImage ;
+            $imageName = uniqid() . '_' . basename($image['name']);
+            $cheminRelatifImage = "images-produit/" . $imageName;
+            $imageDestination = '../ressources/' . $cheminRelatifImage;
+
+            if (move_uploaded_file($image['tmp_name'], $imageDestination)) {
+                return $cheminRelatifImage;
             } else {
-                throw new Exception("Erreur lors du téléchargement de l'image");
+                throw new Exception("Erreur lors du téléchargement de l'image.");
             }
         } catch (Exception $e) {
-            throw new Exception("Erreur lors du téléchargement et de l'enregistrement de l'image : " . $e->getMessage());
+            throw new Exception("Erreur lors du téléchargement de l'image : " . $e->getMessage());
         }
     }
 
@@ -52,53 +50,56 @@ class ProduitService {
             $connexion = Database::recupererConnexion();
             $requete = $connexion->prepare($sql);
             $requete->execute([
-                ':nom' => $produit->getNom() ,
-                ':quantite' => $produit->getQuantite() ,
+                ':nom' => $produit->getNom(),
+                ':quantite' => $produit->getQuantite(),
                 ':courte_description' => $produit->getCourteDescription(),
-                ':description' => $produit->getDescription() ,
-                ':prix_unitaire' => $produit->getPrixUnitaire() ,
-                ':id_categorie' =>$produit->getIdCategorie() ,
+                ':description' => $produit->getDescription(),
+                ':prix_unitaire' => $produit->getPrixUnitaire(),
+                ':id_categorie' => $produit->getIdCategorie(),
             ]);
             return $connexion->lastInsertId();
-        } catch (Exception $e) {
-            throw new Exception("Erreur lors de l'enregistrement des informations du produit : " . $e->getMessage());
+        } catch (PDOException $e) {
+            throw new Exception("Erreur PDO lors de l'enregistrement des informations du produit : " . $e->getMessage());
         }
     }
 
     // Télécharge et enregistre respectivement l'image et les informations d'un produit et de son image dans la BD
     public function ajoutCompletProduit(Produit $produit, $image) : void {
+        $connexion = Database::recupererConnexion();
         try {
-            $connexion = Database::recupererConnexion();
-            $connexion->beginTransaction(); 
+            $connexion->beginTransaction();
             $idProduit = $this->enregistrerProduitInfo($produit);
-            $cheminImage =  $this->telechargerImage($image); 
-            $this->enregistrerImageInfo($cheminImage,$idProduit);
+            $cheminImage = $this->telechargerImage($image);
+            $this->enregistrerImageInfo($cheminImage, $idProduit);
             $connexion->commit();
         } catch (Exception $e) {
-            $connexion->rollBack(); 
+            $connexion->rollBack();
             throw new Exception("Erreur lors de l'ajout complet du produit : " . $e->getMessage());
         }
     }
-    
-    //Met a jour les informations d'un produit  
-    private function majProduitInfo(Produit $produit) : void{
+     
+    // Met à jour les informations d'un produit
+    private function majProduitInfo(Produit $produit) : void {
         try {
-            $sql = "UPDATE Produit 
+            $sql = "UPDATE produit 
                     SET nom = :nom, prix_unitaire = :prix_unitaire, quantite = :quantite, courte_description = :courte_description, description = :description, id_categorie = :id_categorie  
-                    WHERE id_produit = :id_produit";            
-            $connexion = Database::recupererConnexion();           
+                    WHERE id_produit = :id_produit";
+            $connexion = Database::recupererConnexion();
             $requete = $connexion->prepare($sql);
             $requete->execute([
                 ':nom' => $produit->getNom(),
-                ':prix_unitaire'=>$produit->getPrixUnitaire(),
-                ':quantite'=>$produit->getQuantite(),
-                ':courte_description'=> $produit->getCourteDescription(),
-                ':description'=>$produit->getDescription(),
-                ':id_categorie'=>$produit->getIdCategorie(),
-                ':id_produit'=> $produit->getId()
+                ':prix_unitaire' => $produit->getPrixUnitaire(),
+                ':quantite' => $produit->getQuantite(),
+                ':courte_description' => $produit->getCourteDescription(),
+                ':description' => $produit->getDescription(),
+                ':id_categorie' => $produit->getIdCategorie(),
+                ':id_produit' => $produit->getId(),
             ]);
-        } catch (Exception $e) {
-            throw new Exception ("Erreur lors de la mise a jour des information du produit: ".$e->getMessage());
+            if ($requete->rowCount() === 0) {
+                throw new Exception("Aucune mise à jour effectuée, Probleme les informations du produi {$produit->getPrixUnitaire()}");
+            }
+        } catch (PDOException $e) {
+            throw new Exception("Erreur PDO lors de la mise à jour des informations du produit : " . $e->getMessage());
         }
     }
 
@@ -110,22 +111,23 @@ class ProduitService {
             $requete = $connexion->prepare($sql);
             $requete->execute([
                 ':chemin' =>$cheminImage,
-                ':idProduit' => $idProduit
+                ':id_produit' => $idProduit
             ]);
+            $requete->rowCount() === 0 
+            ? throw new Exception("Aucune modification effectuée : l'ID produit {$idProduit} : {$cheminImage} est introuvable ou les données sont identiques.") 
+            : null;
         } catch (Exception $e) {
             throw new Exception("Erreur lors de l'enregistrement des informations de l'image dans la bd ".$e->getMessage());
         } 
     }
 
-    //Supprime le fichier de l'image dans le dossier des images
-    private function supprimerImageFichier($cheminAncienneImage) :void{
+    // Supprime le fichier de l'image
+    private function supprimerImageFichier($cheminAncienneImage) : void {
         try {
-            $cheminComplet = "../ressources/".$cheminAncienneImage ; 
-            if (file_exists($cheminComplet)) {
-                if (!unlink($cheminComplet)) { 
-                    throw new Exception("Erreur lors de la suppression de l'ancienne image.");
-                }
-            }        
+            $cheminComplet = "../ressources/" . $cheminAncienneImage;
+            if (file_exists($cheminComplet) && !unlink($cheminComplet)) {
+                throw new Exception("Erreur lors de la suppression de l'ancienne image.");
+            }
         } catch (Exception $e) {
             throw new Exception($e->getMessage());
         }
@@ -141,6 +143,7 @@ class ProduitService {
             $this->majImageInfo($cheminImage, $produit->getId());
             $this->supprimerImageFichier($cheminAncienneImage);
             $connexion->commit();
+            
         } catch (Exception $e) {
             $connexion->rollBack(); 
             throw new Exception("Erreur lors de la mise a jour complete: " . $e->getMessage());
@@ -176,7 +179,6 @@ class ProduitService {
     // Récupère un produit à travers son ID
     public function recupererProduitParId($idProduit) {
         try {
-            // Requête SQL avec jointures
             $sql = "SELECT 
                         p.id_produit AS id, 
                         p.nom AS nom, 
@@ -191,15 +193,9 @@ class ProduitService {
                     JOIN produit p ON p.id_categorie = c.id_categorie
                     LEFT JOIN image i ON p.id_produit = i.id_produit
                     WHERE p.id_produit = :idProduit";
-
-        
             $connexion = Database::recupererConnexion();
             $requete = $connexion->prepare($sql);
-            
-            $requete->execute([
-                ':idProduit' => $idProduit
-            ]);
-
+            $requete->execute([':idProduit' => $idProduit]);
             $produit = $requete->fetch(PDO::FETCH_ASSOC);
 
             if (!$produit) {
@@ -207,9 +203,8 @@ class ProduitService {
             }
 
             return Produit::InitialiserAvecTableau($produit);
-
-        } catch (Exception $e) {
-            throw new Exception("Erreur lors de la récupération du produit : " . $e->getMessage());
+        } catch (PDOException $e) {
+            throw new Exception("Erreur PDO lors de la récupération du produit : " . $e->getMessage());
         }
     }
 

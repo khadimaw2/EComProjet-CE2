@@ -9,19 +9,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <style>
       .product-card {
-        height: 30%;
-        width: 70%;
+        border: 1px solid #ddd; /* Ajout d'une bordure légère */
+        border-radius: 10px; /* Coins arrondis */
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre douce */
+        transition: transform 0.2s, box-shadow 0.2s;
       }
+      
+      .product-card:hover {
+        transform: translateY(-5px); /* Léger soulèvement au survol */
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+      }
+
       .product-card img {
-        height: 250px; 
-        object-fit: cover;
+        height: 200px; /* Hauteur fixe pour les images */
+        object-fit: cover; /* Assure que les images sont bien ajustées */
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
       }
+
       .product-card .card-body {
+        height: 150px; /* Hauteur uniforme pour le texte et les boutons */
         display: flex;
         flex-direction: column;
         justify-content: space-between;
       }
-    </style>
+
+      .row {
+        row-gap: 20px; /* Espacement uniforme entre les lignes */
+      }
+</style>
+
     
     <title>Store</title>
 </head>
@@ -59,13 +76,13 @@
           <div class="row">
             <?php if (!empty($produits)) : ?>
               <?php foreach ($produits as $produit) : ?>
-                <div class="col-md-4 mb-4">
+                <div class="col-sm-6 col-md-4 col-lg-3 mb-4"> <!-- Utilisation de colonnes Bootstrap -->
                   <div class="card product-card">
-                    <img src="<?= empty($produit->getcheminImage()) ? "../ressources/".$produit->getcheminImage() : '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
+                    <img src="<?= !empty($produit->getcheminImage()) ? "../ressources/".$produit->getcheminImage() : '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
                     <div class="card-body">
                       <h5 class="card-title"><?= $produit->getNom().' '.$produit->getPrixUnitaire().'$'; ?></h5>
-                      <p class="card-text"><?= $produit->getCourteDescription(); ?></p>
-                      <a href="detailProduit.php?id=<?= $produit->getId(); ?>" class="btn btn-success">Voir Details</a>
+                      <p class="card-text text-truncate" style="max-height: 60px; overflow: hidden;"><?= $produit->getCourteDescription(); ?></p>
+                      <a href="detailProduit.php?id=<?= $produit->getId(); ?>" class="btn btn-success w-100">Voir Details</a>
                     </div>
                   </div>
                 </div>
@@ -81,13 +98,13 @@
           <div class="row">
             <?php foreach ($produits as $produit) : ?>
               <?php if ($produit->getNomCategorie()=='Capillaire') : ?>
-                <div class="col-md-4 mb-4">
+                <div class="col-sm-6 col-md-4 col-lg-3 mb-4"> <!-- Utilisation de colonnes Bootstrap -->
                   <div class="card product-card">
-                    <img src="<?= empty($produit->getcheminImage()) ? "../ressources/".$produit->getcheminImage(): '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
+                    <img src="<?= !empty($produit->getcheminImage()) ? "../ressources/".$produit->getcheminImage() : '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
                     <div class="card-body">
                       <h5 class="card-title"><?= $produit->getNom().' '.$produit->getPrixUnitaire().'$'; ?></h5>
-                      <p class="card-text"><?= $produit->getCourteDescription(); ?></p>
-                      <a href="detailProduit.php?id=<?= $produit->getId(); ?>" class="btn btn-success">Voir Details</a>
+                      <p class="card-text text-truncate" style="max-height: 60px; overflow: hidden;"><?= $produit->getCourteDescription(); ?></p>
+                      <a href="detailProduit.php?id=<?= $produit->getId(); ?>" class="btn btn-success w-100">Voir Details</a>
                     </div>
                   </div>
                 </div>
@@ -101,13 +118,13 @@
           <div class="row">
             <?php foreach ($produits as $produit) : ?>
               <?php if ($produit->getNomCategorie() == 'Corporelle') : ?>
-                <div class="col-md-4 mb-4">
+                <div class="col-sm-6 col-md-4 col-lg-3 mb-4"> <!-- Utilisation de colonnes Bootstrap -->
                   <div class="card product-card">
-                    <img src="<?= empty($produit->getcheminImage()) ? "../ressources/".$produit->getcheminImage() : '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
+                    <img src="<?= !empty($produit->getcheminImage()) ? "../ressources/".$produit->getcheminImage() : '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
                     <div class="card-body">
-                    <h5 class="card-title"><?= $produit->getNom().' '.$produit->getPrixUnitaire().'$'; ?></h5>
-                    <p class="card-text"><?= $produit->getCourteDescription(); ?></p>
-                      <a href="detailProduit.php?id=<?= $produit->getId(); ?>" class="btn btn-success">Voir Details</a>
+                      <h5 class="card-title"><?= $produit->getNom().' '.$produit->getPrixUnitaire().'$'; ?></h5>
+                      <p class="card-text text-truncate" style="max-height: 60px; overflow: hidden;"><?= $produit->getCourteDescription(); ?></p>
+                      <a href="detailProduit.php?id=<?= $produit->getId(); ?>" class="btn btn-success w-100">Voir Details</a>
                     </div>
                   </div>
                 </div>
@@ -119,8 +136,5 @@
     </div>
 
     <!-- Optional JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-</body>
+  </body>
 </html>

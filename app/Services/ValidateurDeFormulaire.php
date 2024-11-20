@@ -40,7 +40,7 @@ class ValidateurDeFormulaire {
         }
     
         $typeImage = strtolower(pathinfo($fichierImage['name'], PATHINFO_EXTENSION));
-        if (!in_array($typeImage, ['jpg', 'jpeg', 'png', 'gif'])) {
+        if (!in_array($typeImage, ['jpg', 'jpeg', 'png', 'gif','avif'])) {
             return "Le type du fichier n'est pas recevable";
         }
 

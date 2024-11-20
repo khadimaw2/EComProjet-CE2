@@ -36,7 +36,6 @@ session_start();
                         $utilisateur = Utilisateur::InitialiserAvecTableau($this->utilisateurService->recupererInfosUtilisateur($values['courriel'])); 
                         $utilisateur->setMotDePasse('');
                         $_SESSION['utilisateur'] = $utilisateur;
-                        var_dump($_SESSION['utilisateur']);
                         ValidateurDeFormulaire::unsetSessionVariables(['errors','values']);
                         header("Location: ../publics/store.php");
                         exit;

@@ -29,7 +29,7 @@ require_once 'header.php';
                     <tr>
                         <th scope="row"><?= $i++; ?></th>
                         <td><img height="50px" width="50px" 
-                                src="<?php echo (empty($produit->getcheminImage())) 
+                                src="<?php echo (!empty($produit->getcheminImage())) 
                                     ? '../ressources/' . $produit->getcheminImage()
                                     : '../ressources/images-produit/image-back.png'; ?>">
                         </td>
