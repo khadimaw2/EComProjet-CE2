@@ -95,9 +95,9 @@ class ProduitService {
                 ':id_categorie' => $produit->getIdCategorie(),
                 ':id_produit' => $produit->getId(),
             ]);
-            if ($requete->rowCount() === 0) {
-                throw new Exception("Aucune mise à jour effectuée, Probleme les informations du produi {$produit->getPrixUnitaire()}");
-            }
+            // if ($requete->rowCount() === 0) {
+            //     throw new Exception("Aucune mise à jour effectuée, Probleme les informations du produi {$produit->getId()}");
+            // }
         } catch (PDOException $e) {
             throw new Exception("Erreur PDO lors de la mise à jour des informations du produit : " . $e->getMessage());
         }
@@ -113,9 +113,9 @@ class ProduitService {
                 ':chemin' =>$cheminImage,
                 ':id_produit' => $idProduit
             ]);
-            $requete->rowCount() === 0 
-            ? throw new Exception("Aucune modification effectuée : l'ID produit {$idProduit} : {$cheminImage} est introuvable ou les données sont identiques.") 
-            : null;
+            // $requete->rowCount() === 0 
+            // ? throw new Exception("Aucune modification effectuée : l'ID produit {$idProduit} : {$cheminImage} est introuvable ou les données sont identiques.") 
+            // : null;
         } catch (Exception $e) {
             throw new Exception("Erreur lors de l'enregistrement des informations de l'image dans la bd ".$e->getMessage());
         } 

@@ -8,8 +8,8 @@ require_once 'header.php';
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <link rel="stylesheet" href="../publics/css/detailsProduitStyle.css">
     <title>Détails du produit</title>
-
 </head>
+
 <body data-bs-theme="dark">
     <div class="container product-container">
         <div class="row">

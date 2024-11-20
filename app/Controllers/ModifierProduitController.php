@@ -38,11 +38,7 @@
         public function modifier(array $donnee, array $fichiers, Produit $produitAModifier) {
             try {
                 list($errors, $values) = ValidateurDeFormulaire::validerFormulaireAjoutProduit($donnee, $fichiers);
-                
-                if ($this->produitsPareils($produitAModifier, $donnee)) {
-                    $errors['echecModification'] = "Aucune modification détectée sur le produit.";
-                }
-        
+
                 if (empty($errors)) {
                     $image = $fichiers['image'];
                     $produit = Produit::InitialiserAvecTableau($donnee);
@@ -55,7 +51,7 @@
                     );
         
                     ValidateurDeFormulaire::unsetSessionVariables(['errors', 'values']);
-                    $this->redirigerVersPage('store.php');
+                    $this->redirigerVersPage('liste-produits.php');
                 } else {
                     // Gestion des erreurs
                     $_SESSION['errors'] = $errors;
@@ -66,13 +62,16 @@
                 GestionnaireErreur::redirigerVersErreurPage($e->getMessage());
             }
         }
-        
+        //Modifier Validation formulaire, exclure la validation de l'image.
+        //Modifier les parametres de modification complet : parametre image opionnel et adapter les requette ,
+        //Dans la fonction de modification, controller le type de retour de la maj et envoyer une message selon le retour  
+
         // Fonction utilitaire pour la redirection
         private function redirigerVersPage(string $page) {
             header("Location: ../publics/$page");
             exit;
         }
-         
+    
     }
 
 

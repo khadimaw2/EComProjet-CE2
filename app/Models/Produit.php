@@ -7,7 +7,7 @@
         private $prixUnitaire; 
         private string $description;
         private string $courteDescription;
-        private string $quantite; 
+        private int $quantite; 
         private int $idCategorie;
         private string $nomCategorie;
         private string $cheminImage ; 
@@ -41,7 +41,7 @@
         }
 
         public static function creerObjetVide(): self {
-            return new self(0, '', 0, '', '', '', 0, '', '');
+            return new self(0, '', 0, '', '', 0 , 0, '', '');
         }
         
     

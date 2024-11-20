@@ -9,7 +9,7 @@ class GestionnaireErreur
             session_start();
         }
         $_SESSION['error_message'] = $message;
-        header("Location: ../app/Views/erreur.php");
+        header("Location: ../publics/erreur.php");
         exit();
     }   
 }

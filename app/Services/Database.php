@@ -11,6 +11,7 @@
         //Le constructeur etablie directement une connexion a la bd mais est inaccessible depuis l'exterieur
         private function __construct() {
             $this->connexion = new PDO("mysql:host=" . DB_HOST . ";dbname=" . DB_NAME, DB_USER, DB_PASSWORD);
+            $this->connexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         }
         
         //Cette fonction permet de recuperer la connexion a la base de donne sans pour autant creer un objet Database
