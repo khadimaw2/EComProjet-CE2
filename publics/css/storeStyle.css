@@ -1,0 +1,29 @@
+.product-card {
+    border: 1px solid #ddd; /* Ajout d'une bordure légère */
+    border-radius: 10px; /* Coins arrondis */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre douce */
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+.product-card:hover {
+    transform: translateY(-5px); /* Léger soulèvement au survol */
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
+}
+
+.product-card img {
+    height: 200px; /* Hauteur fixe pour les images */
+    object-fit: cover; /* Assure que les images sont bien ajustées */
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+}
+
+.product-card .card-body {
+    height: 150px; /* Hauteur uniforme pour le texte et les boutons */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.row {
+    row-gap: 20px; /* Espacement uniforme entre les lignes */
+}

@@ -7,39 +7,7 @@
     <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <style>
-      .product-card {
-        border: 1px solid #ddd; /* Ajout d'une bordure légère */
-        border-radius: 10px; /* Coins arrondis */
-        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Ombre douce */
-        transition: transform 0.2s, box-shadow 0.2s;
-      }
-      
-      .product-card:hover {
-        transform: translateY(-5px); /* Léger soulèvement au survol */
-        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.2);
-      }
-
-      .product-card img {
-        height: 200px; /* Hauteur fixe pour les images */
-        object-fit: cover; /* Assure que les images sont bien ajustées */
-        border-top-left-radius: 10px;
-        border-top-right-radius: 10px;
-      }
-
-      .product-card .card-body {
-        height: 150px; /* Hauteur uniforme pour le texte et les boutons */
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-      }
-
-      .row {
-        row-gap: 20px; /* Espacement uniforme entre les lignes */
-      }
-</style>
-
-    
+    <link rel="stylesheet" href="../publics/css/storeStyle.css">
     <title>Store</title>
 </head>
 
@@ -82,7 +50,7 @@
                     <div class="card-body">
                       <h5 class="card-title"><?= $produit->getNom().' '.$produit->getPrixUnitaire().'$'; ?></h5>
                       <p class="card-text text-truncate" style="max-height: 60px; overflow: hidden;"><?= $produit->getCourteDescription(); ?></p>
-                      <a href="detailProduit.php?id=<?= $produit->getId(); ?>" class="btn btn-success w-100">Voir Details</a>
+                      <a href="../publics/details-produit.php?id=<?= $produit->getId(); ?>" class="btn btn-success w-100">Voir Details</a>
                     </div>
                   </div>
                 </div>
@@ -104,7 +72,7 @@
                     <div class="card-body">
                       <h5 class="card-title"><?= $produit->getNom().' '.$produit->getPrixUnitaire().'$'; ?></h5>
                       <p class="card-text text-truncate" style="max-height: 60px; overflow: hidden;"><?= $produit->getCourteDescription(); ?></p>
-                      <a href="detailProduit.php?id=<?= $produit->getId(); ?>" class="btn btn-success w-100">Voir Details</a>
+                      <a href="../publics/details-produit.php?id=<?= $produit->getId(); ?>" class="btn btn-success w-100">Voir Details</a>
                     </div>
                   </div>
                 </div>
@@ -124,7 +92,7 @@
                     <div class="card-body">
                       <h5 class="card-title"><?= $produit->getNom().' '.$produit->getPrixUnitaire().'$'; ?></h5>
                       <p class="card-text text-truncate" style="max-height: 60px; overflow: hidden;"><?= $produit->getCourteDescription(); ?></p>
-                      <a href="detailProduit.php?id=<?= $produit->getId(); ?>" class="btn btn-success w-100">Voir Details</a>
+                      <a href="../publics/details-produit.php?id=<?= $produit->getId(); ?>" class="btn btn-success w-100">Voir Details</a>
                     </div>
                   </div>
                 </div>
