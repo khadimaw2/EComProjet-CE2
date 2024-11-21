@@ -29,13 +29,13 @@ class Utilisateur {
     public static function InitialiserAvecTableau(array $donnee): self {
         return new self(
             $donnee['id_utilisateur'] ?? 0, 
-            $donnee['nom'] ?? '',
-            $donnee['prenom'] ?? '',
-            $donnee['date_naissance'] ?? '',
-            $donnee['courriel'] ?? '',
+            $donnee['nom'] ,
+            $donnee['prenom'] ,
+            $donnee['date_naissance'] ,
+            $donnee['courriel'] ,
             $donnee['mot_de_passe'] ?? '',
-            $donnee['telephone'] ?? '',
-            $donnee['description'] ?? '', //description , ici, fais allusion a role (descirption du role)
+            $donnee['telephone'] ,
+            $donnee['description'], //description , ici, fais allusion a role (descirption du role)
             $donnee['adresse'] ?? ''
         );
     }

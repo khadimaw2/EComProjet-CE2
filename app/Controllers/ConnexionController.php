@@ -33,7 +33,7 @@ session_start();
                         $errors['echecAuth'] = "Le mot de passe ou le courriel est incorrect";
                         $this->afficherFormulaireConnexion($errors, []);
                     } else {
-                        $utilisateur = Utilisateur::InitialiserAvecTableau($this->utilisateurService->recupererInfosUtilisateur($values['courriel'])); 
+                        $utilisateur = $this->utilisateurService->recupererInfosUtilisateur($values['courriel']); 
                         $utilisateur->setMotDePasse('');
                         $_SESSION['utilisateur'] = $utilisateur;
                         ValidateurDeFormulaire::unsetSessionVariables(['errors','values']);

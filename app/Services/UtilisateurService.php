@@ -4,6 +4,7 @@ namespace App\Services;
 use App\Models\Utilisateur;
 use Exception;
 use PDO;
+use PDOException;
 
 class UtilisateurService {
 
@@ -17,7 +18,8 @@ class UtilisateurService {
 
             $idRole = $requette->fetchColumn();
             return $idRole !== false ? (int) $idRole : null;
-        } catch (Exception $e) {
+        }
+         catch (PDOException $e) {
             throw new Exception("Erreur lors de la récupération du rôle : " . $e->getMessage());
         }
     }
@@ -32,7 +34,7 @@ class UtilisateurService {
                 ':id_role' => $idRole,
                 ':id_utilisateur' => $idUtilisateur
             ]);
-        } catch (Exception $e) {
+        } catch (PDOException $e) {
             throw new Exception("Erreur lors de l'enregistrement du rôle utilisateur : " . $e->getMessage());
         }
     }
@@ -63,7 +65,11 @@ class UtilisateurService {
             }
 
             return (int)$idUtilisateur;
-        } catch (Exception $e) {
+        }
+        catch (PDOException $e) {
+            throw new Exception("Erreur liée a la bd lors de l'inscription de l'utilisateur : " . $e->getMessage());
+        }
+        catch (Exception $e) {
             throw new Exception("Erreur lors de l'inscription de l'utilisateur : " . $e->getMessage());
         }
     }
@@ -77,7 +83,7 @@ class UtilisateurService {
             $requette->execute([':courriel' => $courriel]);
             return $requette->fetchColumn() ;
         } 
-        catch (Exception $e) {
+        catch (PDOException $e) {
             throw new Exception("Erreur lors de la vérification de l'existence du courriel : " . $e->getMessage());
         }
     }
@@ -94,10 +100,12 @@ class UtilisateurService {
                 throw new Exception("Aucun resultat trouvé");
             }
             return $motDePasseTrouve;
-        } catch (Exception $e) {
+        }catch (PDOException $e) {
             throw new Exception("Erreur lors de la recuperation du mot de passe de l'utilisateur ".$e->getMessage());
         }
-        
+        catch (Exception $e) {
+            throw new Exception("Erreur lors de la recuperation du mot de passe de l'utilisateur ".$e->getMessage());
+        } 
     }
 
     //Authentification utilisateur
@@ -111,35 +119,43 @@ class UtilisateurService {
             }
             return false;
             
-        } catch (Exception $e) {
+        } catch (PDOException $e) {
             throw new Exception("Erreur lors de l'authentification de l'utilisateur : " . $e->getMessage());
         }
     }
 
-    //Recuperer les informations d'un utilisateur(Confirmé) a partir de son courriel
-    public function recupererInfosUtilisateur(string $courriel): array {
+    //Recupere toutes  les informations d'un utilisateur via son courriel.
+    public function recupererInfosUtilisateur(string $courriel): Utilisateur {
         try {
-
-            $sql = "SELECT u.*, r.description FROM Utilisateur u
+            $sql = "SELECT u.*, r.description 
+                    FROM Utilisateur u
                     JOIN Role_utilisateur ru ON u.id_utilisateur = ru.id_utilisateur
                     JOIN Role r ON ru.id_role = r.id_role
                     WHERE courriel = :courriel";
             $connexion = Database::recupererConnexion();
             $requette = $connexion->prepare($sql);
             $requette->execute([':courriel' => $courriel]);
-            
+    
             $utilisateur = $requette->fetch(PDO::FETCH_ASSOC);
             if (!$utilisateur) {
                 throw new Exception("Ce courriel n'existe pas dans la base de données.");
             }
-
+    
             $adressService = new AdressService();
             $utilisateur['adresse'] = $adressService->recupererChaineAdressUtilisateur($utilisateur['id_utilisateur']);
     
-            return $utilisateur;
-        } catch (Exception $e) {
+            return Utilisateur::InitialiserAvecTableau($utilisateur);
+        }catch(PDOException $e) {
             throw new Exception("Erreur lors de la récupération des informations de l'utilisateur : " . $e->getMessage());
         }
+        catch (Exception $e) {
+            throw new Exception("Erreur lors de la récupération des informations de l'utilisateur : " . $e->getMessage());
+        }
+    }
+    
+    //Recupere tous les utilisateurs 
+    public function recupererTousLesUtilisateur(){
+        
     }
 
     public function deconnexion(){
