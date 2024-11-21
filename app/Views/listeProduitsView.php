@@ -40,7 +40,11 @@ require_once 'header.php';
                         <td>
                             <a class="btn btn-info" href="#"><i class="bi bi-eye"></i></a>
                             <a class="btn btn-primary" href="../publics/modifier-produit.php?id=<?= $produit->getId(); ?>"><i class="bi bi-pencil-square"></i></a>
-                            <a class="btn btn-danger" href="../publics/supprimer-produit.php?id=<?= $produit->getId(); ?>"><i class="bi bi-trash"></i></a>
+                            <form method="POST" action="../publics/liste-produits.php" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer ce produit ?');">
+                                <input type="hidden" name="action" value="supprimer">
+                                <input type="hidden" name="id" value="<?= $produit->getId(); ?>">
+                                <button type="submit" class="btn btn-danger"><i class="bi bi-trash"></i></button>
+                            </form>
                         </td>
                     </tr>
                 <?php } 

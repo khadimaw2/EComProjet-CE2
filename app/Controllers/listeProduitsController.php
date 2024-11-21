@@ -28,4 +28,18 @@ class ListeProduitsController {
         }
     }
 
+    public function supprimerProduit($idProduit) {
+        try {
+            if (!is_numeric($idProduit) || $idProduit <= 0) {
+                throw new Exception("ID du produit invalide.");
+            }
+    
+            $this->produitService->supprimerProduit($idProduit);
+        } catch (Exception $e) {
+            GestionnaireErreur::redirigerVersErreurPage($e->getMessage());
+        }
+    }
+    
+    
+
 }

@@ -111,10 +111,7 @@ class ProduitService {
                 ':chemin' =>$cheminImage,
                 ':id_produit' => $idProduit
             ]);
-            // $requete->rowCount() === 0 
-            // ? throw new Exception("Aucune modification effectuée : l'ID produit {$idProduit} : {$cheminImage} est introuvable ou les données sont identiques.") 
-            // : null;
-        } catch (Exception $e) {
+        } catch (PDOException $e) {
             throw new Exception("Erreur lors de l'enregistrement des informations de l'image dans la bd ".$e->getMessage());
         } 
     }
@@ -218,5 +215,42 @@ class ProduitService {
         }
     }
 
+    // Récupérer le chemin de l'image associée à un produit
+    private function recupererCheminImage(int $idProduit): ?string {
+        try {
+            $sql = "SELECT chemin FROM image WHERE id_produit = :id_produit";
+            $connexion = Database::recupererConnexion();
+            $requete = $connexion->prepare($sql);
+            $requete->execute([':id_produit' => $idProduit]);
+
+            $chemin = $requete->fetchColumn();
+
+            return $chemin !== false ? $chemin : null;
+        } catch (Exception $e) {
+            throw new Exception("Erreur lors de la récupération du chemin de l'image : " . $e->getMessage());
+        }
+    }
+
+
+    // Supprime un produit à travers son ID
+    public function supprimerProduit(int $idProduit): void {
+        try {
+            $cheminImage = $this->recupererCheminImage($idProduit);
+            
+            $cheminImage? $this->supprimerImageFichier($cheminImage) 
+            :throw new Exception("Erreur a la suppression de l'image du produit");
+
+            $sql = "DELETE FROM Produit WHERE id_produit = :id_produit";
+            $connexion = Database::recupererConnexion();
+            $requete = $connexion->prepare($sql);
+            $requete->execute([':id_produit' => $idProduit]);
+
+            if ($requete->rowCount() === 0) {
+                throw new Exception("Aucun produit trouvé avec l'ID fourni.");
+            }
+        }catch (Exception $e) {
+            throw new Exception("Erreur lors de la suppression du produit : " . $e->getMessage());
+        }
+    }
 }
 ?>
