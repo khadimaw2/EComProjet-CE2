@@ -48,7 +48,21 @@ require_once 'header.php';
                     </tr>
                 <?php } 
             } else {
-                echo "<tr><td colspan='7'>Aucun produit trouvé.</td></tr>";
+                ?>
+                <body>
+                <div class="container mt-5">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-12 text-center my-4">
+                                <h1 class="page-title text-success">Aucun produit dans le stock</h1>
+                                <a class="btn btn-success" href="#">Ajouter des produits</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                </body>
+                </html>
+                <?php
             }
             ?>
             </tbody>

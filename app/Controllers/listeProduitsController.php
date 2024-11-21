@@ -13,7 +13,7 @@ class ListeProduitsController {
     }
 
      //Affiche la vue du formulaire 
-    public function afficherListeProduits($errors =[], $values = []){
+    public function afficherListeProduits(){
         try {
             $produits = $this->produitService->recupererTousLesProduits();
 
