@@ -8,6 +8,7 @@
     use Exception;
 
     class ModifierProduitController{
+        
         private $produitService;
 
         public function __construct(){
@@ -19,59 +20,57 @@
             include __DIR__."/../Views/modifierProduitView.php";
         }
 
-        //Verifie si deux produits passés en parametre sont pareils
-        private function produitsPareils(Produit $produit, array $nouvellesDonnees): bool {
-            $anciennesDonnees = [
-                "nom" => $produit->getNom(),
-                "prix_unitaire" => $produit->getPrixUnitaire(),
-                "quantite" => $produit->getQuantite(),
-                "courte_description" => $produit->getCourteDescription(),
-                "description" => $produit->getDescription(),
-                "id_categorie" => $produit->getIdCategorie(),
-            ];
-            unset($nouvellesDonnees['image']);
-
-            return $anciennesDonnees == $nouvellesDonnees;
-        }
-        
         //Modifie les informations d'un produit ainsi que son image 
         public function modifier(array $donnee, array $fichiers, Produit $produitAModifier) {
             try {
-                list($errors, $values) = ValidateurDeFormulaire::validerFormulaireAjoutProduit($donnee, $fichiers);
-
+                list($errors, $values) = ValidateurDeFormulaire::validerFormulaireModfierProduit($donnee);
+        
                 if (empty($errors)) {
-                    $image = $fichiers['image'];
                     $produit = Produit::InitialiserAvecTableau($donnee);
                     $produit->setId($produitAModifier->getId());
         
-                    $this->produitService->majProduitComplet(
-                        $produit,
-                        $image,
-                        $produitAModifier->getCheminImage()
-                    );
+                    
+                    $image = isset($fichiers['image']) && !$this->imageVide($fichiers) ? $fichiers['image'] : null;
+                    $ancienneImage = $image ? $produitAModifier->getCheminImage() : null;
         
-                    ValidateurDeFormulaire::unsetSessionVariables(['errors', 'values']);
-                    $this->redirigerVersPage('liste-produits.php');
+                    
+                    $modificationsEffectuees = $this->produitService->majProduitComplet($produit, $image, $ancienneImage);
+        
+                    if (!$modificationsEffectuees) {
+                        $errors['modification'] = "Aucune modification n'a été enregistrée.";
+                        $this->redirigerVersFormulaireAvecErreur($errors, $values);
+                    } else {
+                        ValidateurDeFormulaire::unsetSessionVariables(['errors', 'values']);
+                        $this->redirigerVersPage('liste-produits.php');
+                    }
                 } else {
-                    // Gestion des erreurs
-                    $_SESSION['errors'] = $errors;
-                    $_SESSION['values'] = $values;
-                    $this->afficherFormulaireModifierProduit($errors, $values, Produit::creerObjetVide());
+                    
+                    $this->redirigerVersFormulaireAvecErreur($errors, $values);
                 }
             } catch (Exception $e) {
                 GestionnaireErreur::redirigerVersErreurPage($e->getMessage());
             }
         }
-        //Modifier Validation formulaire, exclure la validation de l'image.
-        //Modifier les parametres de modification complet : parametre image opionnel et adapter les requette ,
-        //Dans la fonction de modification, controller le type de retour de la maj et envoyer une message selon le retour  
+        
 
         // Fonction utilitaire pour la redirection
         private function redirigerVersPage(string $page) {
             header("Location: ../publics/$page");
             exit;
         }
-    
+        
+        //Verifie si le champs image du formulaire est vide ou nom
+        private function imageVide(array $fichiers): bool {
+            $image = $fichiers['image'];
+            return empty($image['name']) || !is_uploaded_file($image['tmp_name']);
+        }
+
+        //Redirige vers la page de vue du vormulaire evec les variables sesssions contenant les erreurs
+        private function redirigerVersFormulaireAvecErreur(array $errors,array $values){
+            $_SESSION['errors'] = $errors;
+            $_SESSION['values'] = $values;
+            $this->afficherFormulaireModifierProduit($errors, $values, Produit::creerObjetVide());
+        }
     }
 
 

@@ -78,8 +78,8 @@ class ProduitService {
         }
     }
      
-    // Met à jour les informations d'un produit
-    private function majProduitInfo(Produit $produit) : void {
+    // Met à jour les informations d'un produit, retourne null si rien n'a ete modifie sur le produit
+    private function majProduitInfo(Produit $produit) {
         try {
             $sql = "UPDATE produit 
                     SET nom = :nom, prix_unitaire = :prix_unitaire, quantite = :quantite, courte_description = :courte_description, description = :description, id_categorie = :id_categorie  
@@ -95,9 +95,7 @@ class ProduitService {
                 ':id_categorie' => $produit->getIdCategorie(),
                 ':id_produit' => $produit->getId(),
             ]);
-            // if ($requete->rowCount() === 0) {
-            //     throw new Exception("Aucune mise à jour effectuée, Probleme les informations du produi {$produit->getId()}");
-            // }
+            return $requete->rowCount() > 0;
         } catch (PDOException $e) {
             throw new Exception("Erreur PDO lors de la mise à jour des informations du produit : " . $e->getMessage());
         }
@@ -134,19 +132,31 @@ class ProduitService {
     }
 
     //Modification complete d'un produit
-    public function majProduitComplet(Produit $produit, $image, $cheminAncienneImage) :void {
+    public function majProduitComplet(Produit $produit, $image=null, $cheminAncienneImage=null) :bool {
         try {
             $connexion = Database::recupererConnexion();
             $connexion->beginTransaction(); 
-            $this->majProduitInfo($produit);
-            $cheminImage =  $this->telechargerImage($image); 
-            $this->majImageInfo($cheminImage, $produit->getId());
-            $this->supprimerImageFichier($cheminAncienneImage);
+
+            $infoProduitModifiees = $this->majProduitInfo($produit);
+
+            $imageModifiee = false;
+            if ($image !== null && $cheminAncienneImage !== null) {
+                $cheminImage = $this->telechargerImage($image);
+                $this->majImageInfo($cheminImage, $produit->getId());
+                $this->supprimerImageFichier($cheminAncienneImage);
+                $imageModifiee = true;
+            }
+
             $connexion->commit();
+
+            return $infoProduitModifiees || $imageModifiee;
             
-        } catch (Exception $e) {
-            $connexion->rollBack(); 
-            throw new Exception("Erreur lors de la mise a jour complete: " . $e->getMessage());
+        }catch (PDOException $e) {
+            $connexion->rollBack();
+            throw new Exception("Erreur liée à la base de données : " . $e->getMessage());
+        }catch (Exception $e) {
+            $connexion->rollBack();
+            throw new Exception("Erreur lors de la mise à jour complète : " . $e->getMessage());
         }
     }
 

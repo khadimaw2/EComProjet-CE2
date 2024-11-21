@@ -130,11 +130,11 @@ class ValidateurDeFormulaire {
         <?php endif; 
     }
 
-    // Valider les données du formulaire d'ajout de produit
-    public static function validerFormulaireAjoutProduit($donnee, $fichiers) {
+    //Valider les champs d'information du produit
+    private static function validerChampsInfoProduit($donnee) {
         $errors = [];
         $values = [];
-    
+
         // Champs obligatoires et leurs messages d'erreur
         $champsAValider = [
             "nom" => "Le nom du produit est obligatoire",
@@ -153,8 +153,15 @@ class ValidateurDeFormulaire {
                 $values[$champs] = htmlspecialchars($donnee[$champs]);
             }
         }
+
+        return [$errors, $values];
+
+    }
+
+    // Valider les données du formulaire d'ajout de produit
+    public static function validerFormulaireAjoutProduit($donnee, $fichiers) {
+        list($errors, $values) = self::validerChampsInfoProduit($donnee);
     
-        // Validation de l'image
         $error = self::verifierImage($fichiers['image']);
         if ($error) {
             $errors['image'] = $error;
@@ -164,6 +171,11 @@ class ValidateurDeFormulaire {
     
         return [$errors, $values];
     }
-    
 
+    // Valider le formulaire de modification de produit
+    public static function validerFormulaireModfierProduit($donnee){
+        list($errors, $values) = self::validerChampsInfoProduit($donnee);
+        return [$errors, $values];
+    }
+    
 }

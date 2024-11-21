@@ -12,6 +12,14 @@ use App\Services\ValidateurDeFormulaire;
             </div>
         </div>
 
+        <?php if (isset($errors["modification"])) {?>
+            <div class="row">
+                <div class="alert alert-light col-12 text-center my-4" role="alert"> 
+                    <?php echo $errors["modification"];?>
+                </div>
+            </div>
+        <?php } ?> 
+
         <?php if (isset($errors["echecModification"])) {?>
             <div class="row">
                 <div class="alert alert-danger col-12 text-center my-4" role="alert"> 
