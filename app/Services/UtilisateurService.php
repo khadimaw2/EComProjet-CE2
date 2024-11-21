@@ -140,11 +140,8 @@ class UtilisateurService {
             if (!$utilisateur) {
                 throw new Exception("Ce courriel n'existe pas dans la base de données.");
             }
-    
-            $adressService = new AdressService();
-            $utilisateur['adresse'] = $adressService->recupererChaineAdressUtilisateur($utilisateur['id_utilisateur']);
-    
-            return Utilisateur::InitialiserAvecTableau($utilisateur);
+            return $this->transformerEnInstanceUtilisateur($utilisateur);
+
         }catch(PDOException $e) {
             throw new Exception("Erreur lors de la récupération des informations de l'utilisateur : " . $e->getMessage());
         }
@@ -152,10 +149,49 @@ class UtilisateurService {
             throw new Exception("Erreur lors de la récupération des informations de l'utilisateur : " . $e->getMessage());
         }
     }
+
+    // Transformer chaque tableau associatif (d'un grand tableau) en instance de Utilisateur
+    private function transformerEnTabObjUtilisateur( array $utilisateursDonnee) : array{
+        $utilisateurs = array_map(
+            function ($donnee) {
+                unset($donnee['mot_de_passe']);
+                return $this->transformerEnInstanceUtilisateur($donnee);
+            },
+            $utilisateursDonnee
+        );
+        return $utilisateurs ;
+    }
+
+    //Transformer un tableau en une instance utilisateur
+    private function transformerEnInstanceUtilisateur(array $utilisateur) : Utilisateur {
+        $adressService = new AdressService();
+        $utilisateur['adresse'] = $adressService->recupererChaineAdressUtilisateur($utilisateur['id_utilisateur']);
+        return Utilisateur::InitialiserAvecTableau($utilisateur);
+    }
     
     //Recupere tous les utilisateurs 
-    public function recupererTousLesUtilisateur(){
-        
+    public function recupererTousLesUtilisateurs(): array {
+        try {
+            $sql = "SELECT u.*, r.description 
+                    FROM Utilisateur u
+                    JOIN Role_utilisateur ru ON u.id_utilisateur = ru.id_utilisateur
+                    JOIN Role r ON ru.id_role = r.id_role";
+
+            $connexion = Database::recupererConnexion();
+            $requette = $connexion->prepare($sql);
+            $requette->execute();
+
+            $utilisateurs = $this->transformerEnTabObjUtilisateur($requette->fetchAll(PDO::FETCH_ASSOC));
+
+            return $utilisateurs;
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors de la récupération des utilisateurs : " . $e->getMessage());
+        }
+    }
+
+    //Recuperer un utilisateur via son id
+    public function recupererInfosUtilisateurParId($idUtilisateur){
+
     }
 
     public function deconnexion(){

@@ -231,7 +231,6 @@ class ProduitService {
         }
     }
 
-
     // Supprime un produit à travers son ID
     public function supprimerProduit(int $idProduit): void {
         try {
