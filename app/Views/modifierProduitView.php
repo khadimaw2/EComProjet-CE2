@@ -4,29 +4,27 @@ use App\Services\ValidateurDeFormulaire;
 ?>
 <body>
     <div class="container mt-5">
-        <div class="container">
-            <div class="row">
-                <div class="col-12 text-center my-4">
-                    <h1 class="page-title text-success">Modifier produit</h1>
-                </div>
+        <div class="row">
+            <div class="col-12 text-center my-4">
+                <h1 class="page-title text-success">Modifier produit</h1>
             </div>
         </div>
 
-        <?php if (isset($errors["modification"])) {?>
+        <?php if (isset($errors["modification"])): ?>
             <div class="row">
                 <div class="alert alert-light col-12 text-center my-4" role="alert"> 
                     <?php echo $errors["modification"];?>
                 </div>
             </div>
-        <?php } ?> 
+        <?php endif; ?> 
 
-        <?php if (isset($errors["echecModification"])) {?>
+        <?php if (isset($errors["echecModification"])): ?>
             <div class="row">
                 <div class="alert alert-danger col-12 text-center my-4" role="alert"> 
                     <?php echo $errors["echecModification"];?>
                 </div>
             </div>
-        <?php } ?> 
+        <?php endif; ?> 
 
         <form method="post" enctype="multipart/form-data">
             <div class="mb-3">
