@@ -233,12 +233,35 @@ class UtilisateurService {
         }    
     }
 
+    //Changer le role d'un utilisateur
+    public function changerRoleUtilisateur($idUtilisateur, $actuelRole) : void{
+        try {
+            $sql = "UPDATE role SET role_utilisateur = :idNouveauRole WHERE id_utilisateur = :$idUtilisateur";
+
+            $connexion = Database::recupererConnexion();
+
+            $requete = $connexion->prepare($sql);
+            $idNouveauRole = $actuelRole== 'client' ? 2 : 1; 
+            $requete->execute([
+                ':id_utilisateur' => $idUtilisateur,
+                ':idNouveauRoler' => $idNouveauRole
+            ]);
+
+            $requete->rowCount() > 0 ?? throw new Exception("Id ou role de l'utilisateur invalide") ;       
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors de la modification du role (de admin a Client)".$e);   
+        }
+    }
+
+    //Deconnexion d'un utilisateur 
     public function deconnexion(){
         if(isset($_SESSION['utilisateur'])){
             unset($_SESSION['utilisateur']);
             header("Location: ../publics/connexion.php");
         }
     }
+
+
     
 }
 
