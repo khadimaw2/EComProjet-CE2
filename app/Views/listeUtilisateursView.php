@@ -52,6 +52,7 @@ require_once 'header.php';
                                             <form method="POST" action="../publics/liste-utilisateurs.php" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir changer le rôle de cet utilisateur ?');">
                                                 <input type="hidden" name="action" value="modifier-role">
                                                 <input type="hidden" name="id" value="<?= $utilisateur->getId(); ?>">
+                                                <input type="hidden" name="actuelRole" value="<?= $utilisateur->getRole(); ?>">
                                                 <button type="submit" class="btn btn-sm btn-info" title="Changer rôle">
                                                     <i class="bi bi-arrow-repeat"></i> <?= $utilisateur->getRole() === 'client' ? 'Admin' : 'Client'; ?>
                                                 </button>

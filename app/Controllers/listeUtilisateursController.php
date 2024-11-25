@@ -41,11 +41,12 @@ class ListeutilisateursController {
     }
     
     //Supprimer un utilisateur de la liste
-    public function modifierRoleUtilisateur($idUtilisateur) {
+    public function modifierRoleUtilisateur($idUtilisateur, $actuelRole) {
         try {
             if (!is_numeric($idUtilisateur) || $idUtilisateur <= 0) {
                 throw new Exception("ID du utilisateur invalide.");
             }
+            $this->utilisateurService->changerRoleUtilisateur($idUtilisateur, $actuelRole);
         } catch (Exception $e) {
             GestionnaireErreur::redirigerVersErreurPage($e->getMessage());
         }

@@ -18,7 +18,8 @@
                     $listeUtilisateursController->supprimerUtilisateur($idUtilisateur);
                     break;
                 case 'modifier-role':
-                    $listeUtilisateursController->modifierRoleUtilisateur($idUtilisateur);
+                    empty($_POST['actuelRole'])? throw new Exception("l'actuel role de l'utilisateur non renseigné")
+                    :$listeUtilisateursController->modifierRoleUtilisateur($idUtilisateur, $_POST['actuelRole'] );
                     break;
                 default:
                     throw new Exception("Action du produit invalide.");
