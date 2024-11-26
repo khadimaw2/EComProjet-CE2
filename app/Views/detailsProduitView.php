@@ -21,7 +21,13 @@ require_once 'header.php';
                 <h3 class="product-price"><?= $produit->getPrixUnitaire(); ?> $</h3>
                 <p class="product-description"><?= $produit->getCourteDescription(); ?></p>
                 <p class="product-description"><?= $produit->getDescription(); ?></p>
-                <a href="../public/ajoutAuPanier.php?id=<?= $produit->getId(); ?>" class="btn add-to-cart">Ajouter au panier</a>
+                <form method="POST" action="../publics/details-produit.php" class="d-inline">
+                    <input type="hidden" name="id" value="<?= $produit->getId(); ?>">
+                    <input type="hidden" name="action" value="ajouter-au-panier">
+                    <button type="submit" class="btn add-to-cart"" title="Augmenter quantité">
+                        Ajouter au panier
+                    </button>
+                </form>
             </div>
         </div>
     </div>

@@ -11,14 +11,31 @@ use App\Controllers\ModifierProduitController;
     $produitService = new ProduitService();
 
     try{
-        if (isset($_GET['id']) && is_numeric($_GET['id'])) {
-            $idProduit = $_GET['id'] ;
-            $produit = $produitService->recupererProduitParId($idProduit);
-            $detailsProduitController->afficherDetailsProduit($produit);
-        }else{
-            throw new Exception("Id du produit non specifie");
-        }   
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST'){
+            if (empty($_POST['id']) || !is_numeric($_POST['id']) ||
+                !isset($_POST['action']) || $_POST['action']!='ajouter-au-panier') 
+            {
+                throw new Exception("ID du produit invalide ou action .");
+            }
+            else {
+                $idProduit = $_POST['id'] ;
+                $detailsProduitController->ajouterAuPanier($idProduit);
+            }
+        }
+
+        else {
+            if (isset($_GET['id']) && is_numeric($_GET['id'])) {
+                $idProduit = $_GET['id'] ;
+                $produit = $produitService->recupererProduitParId($idProduit);
+                $detailsProduitController->afficherDetailsProduit($produit);
+            }
+            else{
+                throw new Exception("Id du produit non specifie");
+            } 
+        }
     }catch(Exception $e){
         GestionnaireErreur::redirigerVersErreurPage($e->getMessage());
     }
+
 ?>

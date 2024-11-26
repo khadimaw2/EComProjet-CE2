@@ -13,10 +13,25 @@
             $this->produitService = new ProduitService();
         }
 
+        private function calculerQuantiteTotalePanier() {
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+            $totalQuantite = 0;
+            if (isset($_SESSION['panier']) && !empty($_SESSION['panier'])) {
+                foreach ($_SESSION['panier'] as $produit) {
+                    $totalQuantite += $produit->getQteDansLePanier();
+                }
+            }
+            return $totalQuantite;
+        }
+        
+
         // Affiche la boutique
         public function afficherStore() {
             try {
                 $produits = $this->produitService->recupererTousLesProduits();
+                $qteProduitDansLePanier = $this->calculerQuantiteTotalePanier();
 
                 if (!empty($produits)) {
                     include __DIR__ . '/../Views/storeView.php';

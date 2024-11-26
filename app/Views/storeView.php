@@ -23,7 +23,15 @@
 
     <div class="container my-4">
       <div class="d-grid d-md-flex justify-content-md-end">
-        <a class="btn btn-success" href="panier.php"><i class="bi bi-cart3"></i></a>
+      <a class="btn btn-success position-relative" href="panier.php">
+          <i class="bi bi-cart3"></i>
+          <?php if ($qteProduitDansLePanier  > 0): ?>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                  <?= $qteProduitDansLePanier ?>
+                  <span class="visually-hidden">produits dans le panier</span>
+              </span>
+          <?php endif; ?>
+      </a>
       </div>
       
       <ul class="nav nav-tabs" id="myTab" role="tablist">

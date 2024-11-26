@@ -11,9 +11,10 @@
         private int $idCategorie;
         private string $nomCategorie;
         private string $cheminImage ; 
+        private int $qteDansLePanier ; 
     
         // Constructeur
-        public function __construct($id,$nom, $prixUnitaire, $description, $courteDescription, $quantite, $idCategorie,$nomCategorie,$cheminImage) {
+        public function __construct($id,$nom, $prixUnitaire, $description, $courteDescription, $quantite, $idCategorie,$nomCategorie,$cheminImage,$qteDansLePanier) {
             $this->id = $id ;
             $this->nom = $nom;
             $this->prixUnitaire = $prixUnitaire;
@@ -23,6 +24,7 @@
             $this->idCategorie = $idCategorie;
             $this->nomCategorie = $nomCategorie;
             $this->cheminImage = $cheminImage ; 
+            $this->qteDansLePanier = $qteDansLePanier ; 
         }
 
             // Méthode statique pour créer un produit à partir d'un tableau
@@ -36,12 +38,13 @@
                 $donnee['quantite'], 
                 $donnee['id_categorie'] ?? 0,
                 $donnee['nom_categorie'] ??  '',
-                $donnee['chemin_image'] ??  ''
+                $donnee['chemin_image'] ??  '',
+                $donnee['qteDansLePanier'] ?? 0
             );
         }
 
         public static function creerObjetVide(): self {
-            return new self(0, '', 0, '', '', 0 , 0, '', '');
+            return new self(0, '', 0, '', '', 0 , 0, '', '',0);
         }
         
     
@@ -81,6 +84,10 @@
         public function getcheminImage() {
             return $this->cheminImage;
         }
+
+        public function getQteDansLePanier() {
+            return $this->qteDansLePanier;
+        }
     
         // Setters
         public function setId($id) {
@@ -109,6 +116,9 @@
     
         public function setIdCategorie($idCategorie) {
             $this->idCategorie = $idCategorie;
+        }
+        public function setQteDansLePanier($qteDansLePanier) {
+            $this->qteDansLePanier = $qteDansLePanier;
         }
     }
 
