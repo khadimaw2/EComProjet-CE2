@@ -41,8 +41,6 @@
                     break;
             }
         } catch (Exception $e) {
-            // Gestion des erreurs
-            error_log($e->getMessage()); // Log de l'erreur
             GestionnaireErreur::redirigerVersErreurPage($e->getMessage());
         }
     }

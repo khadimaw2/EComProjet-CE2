@@ -7,7 +7,7 @@
             </a>
 
         <?php } elseif ( $_SESSION['utilisateur']->getAdresse()  == "Adresse non disponible") { ?>
-            <a class="btn btn-success me-2" href="enregistrer-adress.php">
+            <a class="btn btn-success me-2" href="enregistrement-adress.php">
                  <i class="bi bi-cart-check"></i> Passer la commande  
             </a>
              

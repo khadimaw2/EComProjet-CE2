@@ -7,7 +7,7 @@
 
    $listeUtilisateursController = new listeUtilisateursController();
    
-   if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
       try {
         if (empty($_POST['id']) || !is_numeric($_POST['id'])) {
             throw new Exception("ID du produit invalide.");
@@ -29,8 +29,8 @@
     
         } catch (Exception $e) {
           GestionnaireErreur::redirigerVersErreurPage($e->getMessage());
-      }
-  }
+        }
+    }
 
    $listeUtilisateursController->afficherlisteUtilisateurs();
 ?>

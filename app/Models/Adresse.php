@@ -17,6 +17,17 @@ class Adresse {
         $this->province = $province;
     }
 
+    public static function InitialiserAvecTableau(array $donnee): self {
+        return new self(
+            $donnee['rue'],
+            $donnee['ville'], 
+            $donnee['code_postal'], 
+            $donnee['pays'], 
+            $donnee['numero'], 
+            $donnee['province'], 
+        );
+    }
+
     // Getters
     public function getRue(): string {
         return $this->rue;

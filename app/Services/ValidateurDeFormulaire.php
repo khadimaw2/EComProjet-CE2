@@ -177,5 +177,32 @@ class ValidateurDeFormulaire {
         list($errors, $values) = self::validerChampsInfoProduit($donnee);
         return [$errors, $values];
     }
+
+    public static function validerFormulaireAdress($donnee){
+        $errors = [];
+        $values = [];
+
+        // Champs obligatoires et leurs messages d'erreur
+        $champsAValider = [
+            "numero" => "Le numero de la maison est obligatoire",
+            "rue" => "La rue est obligatoire",
+            "ville" => "Le nom de la ville est obligatoire",
+            "province" => "Le nom de la province est obligatoire",
+            "code_postal" => "Le code postal est obligatoire",
+            "pays" => "Le nom du pays est obligatoire"
+        ];
+    
+        foreach ($champsAValider as $champs => $message) {
+            $error = self::verifierChampsObligatoire($donnee[$champs], $message);
+            if ($error) {
+                $errors[$champs] = $error;
+            } else {
+                $values[$champs] = htmlspecialchars($donnee[$champs]);
+            }
+        }
+
+        return [$errors, $values];
+    }
+
     
 }
