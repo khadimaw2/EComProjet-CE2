@@ -12,13 +12,14 @@
             </a>
              
         <?php } else { ?>
-            <form method="POST" action="../publics/liste-produits.php" class="d-inline">
+            <form method="POST" action="../publics/panier.php" class="d-inline">
                 <input type="hidden" name="action" value="passer-commande">
-                <input type="hidden" name="id" value="<?=$_SESSION['utilisateur']->getId() ?>">
+                <input type="hidden" name="prix-total" value="<?=$totalAPayer?>">
                 <button type="submit" class="btn btn-sm btn-danger" title="Supprimer">
                     <i class="bi bi-cart-check"></i>
                     Passer la commande  
                 </button>
             </form>
         <?php }?>
+        
 </div>

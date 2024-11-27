@@ -1,20 +1,24 @@
 <?php 
 namespace App\Controllers;
 
+use App\Models\Commande;
+use App\Services\CommandeService;
 use App\Models\Produit; 
 use Exception;
 use App\Services\GestionnaireErreur;
 
 class PanierController {
-    private $produit;
+    private $commandeService;
+
+    public function __construct() {
+        $this->commandeService = new CommandeService();
+    }
 
      //Affiche la vue du formulaire 
-    public function afficherContenuPanier(){
-        
+    public function afficherContenuPanier(){ 
         $panier = $_SESSION['panier'] ;
         $totalAPayer = 0;
         include __DIR__ . '/../Views/panierView.php';
-
     }
 
    // Modifier la quantité d'un produit dans le panier
@@ -30,21 +34,15 @@ class PanierController {
                 $qteActuelProduit--;
                 if ($qteActuelProduit <= 0) {
                     unset($_SESSION['panier'][$idProduit]);
-                    $_SESSION['message'] = "Le produit a été retiré du panier.";
                 } else {
                     $_SESSION['panier'][$idProduit]->setQteDansLePanier($qteActuelProduit);
-                    $_SESSION['message'] = "Quantité du produit diminuée.";
                 }
             } elseif ($action === 'augmenter') {
                 $qteActuelProduit++;
                 $_SESSION['panier'][$idProduit]->setQteDansLePanier($qteActuelProduit);
-                $_SESSION['message'] = "Quantité du produit augmentée.";
             } else {
-                // Action invalide
                 throw new Exception("Action invalide pour la modification de la quantité.");
             }
-
-            // Redirection vers la page panier
             header("Location: ../publics/panier.php");
             exit;
         } catch (Exception $e) {
@@ -52,8 +50,7 @@ class PanierController {
         }
     }
 
-
-
+    // Supprimer un produit de panier
     public function supprimerDuPanier($idProduit){
         try {
             unset($_SESSION['panier'][$idProduit]);
@@ -63,10 +60,45 @@ class PanierController {
         
     }
 
+    //Calcule le nombre totale de produit dans le panier
+    private function calculerQteProduitsProduit() :int{
+        try{
+            if (session_status() == PHP_SESSION_NONE) {
+                session_start();
+            }
+    
+            if (!isset($_SESSION['panier']) || empty($_SESSION['panier'])) {
+               throw new Exception("Le panier est vide pu n'existe pas", 1); 
+            }
+    
+            $totalQuantite = 0;
+            if (isset($_SESSION['panier']) && !empty($_SESSION['panier'])) {
+                foreach ($_SESSION['panier'] as $produit) {
+                    $totalQuantite += $produit->getQteDansLePanier();
+                }
+            }
+    
+            return $totalQuantite;
+        }catch(Exception $e){
+            GestionnaireErreur::redirigerVersErreurPage($e->getMessage());
+        }
+        
+    }
 
+    //Validation de la commande
+    public function passerCommande($idUtilisateur,$prixTotal) :void{
+        try {
+            $qteProduit = $this->calculerQteProduitsProduit();
+            $date =  date("Y-m-d H:i:s");
+            $commande = new Commande($date,$qteProduit,$prixTotal,$idUtilisateur,$_SESSION['panier']);
+            $this->commandeService->enregistrerCommande($commande);
 
-    
-    
-    
+            $_SESSION['panier']=[];
+            header("Location: ../publics/panier.php");
+            exit;
+        } catch (Exception $e) {
+            GestionnaireErreur::redirigerVersErreurPage($e->getMessage());
+        }    
+    }
 
 }

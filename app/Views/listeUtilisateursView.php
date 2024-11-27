@@ -40,31 +40,27 @@ require_once 'header.php';
                                     <td><?= htmlspecialchars($utilisateur->getPrenom()); ?></td>
                                     <td><?= htmlspecialchars($utilisateur->getCourriel()); ?></td>
                                     <td>
-                                        <span class="badge bg-<?= $utilisateur->getRole() === 'admin' ? 'success' : 'secondary'; ?>">
-                                            <?= htmlspecialchars($utilisateur->getRole()); ?>
-                                        </span>
+                                        
+                                    <span class="badge 
+                                        <?php 
+                                            if ($utilisateur->getRole() === 'admin') {
+                                                echo 'bg-warning text-dark'; // Gold pour Admin
+                                            } elseif ($utilisateur->getRole() === 'employer') {
+                                                echo 'bg-success'; // Vert pour Employer
+                                            } else {
+                                                echo 'bg-secondary'; // Gris pour Client
+                                            }
+                                        ?>">
+                                        <?= htmlspecialchars($utilisateur->getRole()); ?>
+                                    </span>
+
+
                                     </td>
                                     <td><?= htmlspecialchars($utilisateur->getAdresse()); ?></td>
                                     <td class="text-center">
                                         <!-- Bouton groupe pour actions -->
                                         <div class="btn-group" role="group">
-                                            <!-- Modifier rôle -->
-                                            <form method="POST" action="../publics/liste-utilisateurs.php" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir changer le rôle de cet utilisateur ?');">
-                                                <input type="hidden" name="action" value="modifier-role">
-                                                <input type="hidden" name="id" value="<?= $utilisateur->getId(); ?>">
-                                                <input type="hidden" name="actuelRole" value="<?= $utilisateur->getRole(); ?>">
-                                                <button type="submit" class="btn btn-sm btn-info" title="Changer rôle">
-                                                    <i class="bi bi-arrow-repeat"></i> <?= $utilisateur->getRole() === 'client' ? 'Admin' : 'Client'; ?>
-                                                </button>
-                                            </form>
-                                            <!-- Supprimer -->
-                                            <form method="POST" action="../publics/liste-utilisateurs.php" class="d-inline" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
-                                                <input type="hidden" name="action" value="supprimer">
-                                                <input type="hidden" name="id" value="<?= $utilisateur->getId(); ?>">
-                                                <button type="submit" class="btn btn-sm btn-danger" title="Supprimer">
-                                                    <i class="bi bi-trash"></i>
-                                                </button>
-                                            </form>
+                                            <?php include 'actionSurUtilisateur.php' ?> 
                                         </div>
                                     </td>
                                 </tr>

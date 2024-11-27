@@ -14,30 +14,41 @@
 
     $panierController = new PanierController();
 
+    //Verife l'existe ou si le type d'un paramntre numeric est correct
+    function verifierParamatreNumeric($nomParametre){
+        if (empty($_POST[$nomParametre]) || !is_numeric($_POST[$nomParametre])) {
+            throw new Exception(" l'{$nomParametre} est invalide.");
+            return 0;
+        }
+       return intval($_POST[$nomParametre]);
+    }
+
+    //Traitement d'une requette post
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         try {
-            if (empty($_POST['id']) || !is_numeric($_POST['id'])) {
-                throw new Exception("ID du produit invalide.");
-            }
-            $idProduit = intval($_POST['id']);
-
-
-            if (!in_array($_POST['action'], ['diminuer', 'augmenter', 'supprimer'])) {
-                throw new Exception("Action du produit invalide.");
-            }
-
-            // Gestion des actions
             switch ($_POST['action']) {
                 case 'diminuer':
+                    $idProduit = verifierParamatreNumeric('id-produit');
                     $panierController->modifierQteProduit($idProduit, 'diminuer');
                     break;
 
                 case 'augmenter':
+                    $idProduit = verifierParamatreNumeric('id-produit');
                     $panierController->modifierQteProduit($idProduit, 'augmenter');
                     break;
 
                 case 'supprimer':
+                    $idProduit = verifierParamatreNumeric('id-produit');
                     $panierController->supprimerDuPanier($idProduit);
+                    break;
+
+                case 'passer-commande':
+                    $prixTotal = verifierParamatreNumeric('prix-total');
+                    $panierController->passerCommande($_SESSION['utilisateur']->getId(), $prixTotal);
+                    break;
+
+                default:
+                    throw new Exception("Action du produit invalide.");
                     break;
             }
         } catch (Exception $e) {

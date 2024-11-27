@@ -241,7 +241,7 @@ class UtilisateurService {
             $connexion = Database::recupererConnexion();
 
             $requete = $connexion->prepare($sql);
-            $idNouveauRole = $actuelRole== 'client' ? 2 : 1; 
+            $idNouveauRole = $actuelRole== 'client' ? 3 : 1; 
             $requete->execute([
                 ':idUtilisateur' => $idUtilisateur,
                 ':idNouveauRole' => $idNouveauRole
@@ -260,9 +260,6 @@ class UtilisateurService {
             header("Location: ../publics/connexion.php");
         }
     }
-
-
-    
 }
 
 ?>

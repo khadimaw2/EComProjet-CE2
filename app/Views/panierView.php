@@ -49,7 +49,7 @@ include 'header.php';
                                 <div class="btn-group" role="group">
                                     <!-- Formulaire pour diminuer la quantité -->
                                     <form method="POST" action="../publics/panier.php" class="d-inline">
-                                        <input type="hidden" name="id" value="<?= $produit->getId(); ?>">
+                                        <input type="hidden" name="id-produit" value="<?= $produit->getId(); ?>">
                                         <input type="hidden" name="action" value="diminuer">
                                         <button type="submit" class="btn btn-sm btn-secondary" title="Diminuer quantité">
                                             <i class="bi bi-dash"></i>
@@ -58,7 +58,7 @@ include 'header.php';
 
                                     <!-- Formulaire pour augmenter la quantité -->
                                     <form method="POST" action="../publics/panier.php" class="d-inline">
-                                        <input type="hidden" name="id" value="<?= $produit->getId(); ?>">
+                                        <input type="hidden" name="id-produit" value="<?= $produit->getId(); ?>">
                                         <input type="hidden" name="action" value="augmenter">
                                         <button type="submit" class="btn btn-sm btn-secondary" title="Augmenter quantité">
                                             <i class="bi bi-plus"></i>
@@ -68,7 +68,7 @@ include 'header.php';
                                     <!-- Formulaire pour supprimer le produit -->
                                     <form method="POST" action="../publics/panier.php" class="d-inline" 
                                         onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet article du panier ?');">
-                                        <input type="hidden" name="id" value="<?= $produit->getId(); ?>">
+                                        <input type="hidden" name="id-produit" value="<?= $produit->getId(); ?>">
                                         <input type="hidden" name="action" value="supprimer">
                                         <button type="submit" class="btn btn-sm btn-danger" title="Supprimer">
                                             <i class="bi bi-trash"></i>

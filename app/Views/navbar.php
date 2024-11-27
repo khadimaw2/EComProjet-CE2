@@ -27,7 +27,7 @@
                 <!-- Element du navbar d'un admin -->
                 <?php 
                     }
-                    elseif(isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']->getRole() == "admin") { ?>
+                    elseif(isset($_SESSION['utilisateur']) && ($_SESSION['utilisateur']->getRole() == "admin" || $_SESSION['utilisateur']->getRole() == "employer") ){ ?>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle text-light" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Gestion produits
