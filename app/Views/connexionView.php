@@ -14,12 +14,14 @@ use App\Services\ValidateurDeFormulaire;
 
         <!-- Affichage des erreurs générales -->
         <?php if (isset($errors["echecAuth"])) { ?>
-            <div class="row">
-                <div class="alert alert-danger col-12 text-center" role="alert">
-                    <i class="bi bi-exclamation-triangle-fill"></i> <?php echo $errors["echecAuth"]; ?>
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-sm-12">
+                    <div class="alert alert-danger text-center" role="alert">
+                        <i class="bi bi-exclamation-triangle-fill"></i> <?php echo $errors["echecAuth"]; ?>
+                    </div>
                 </div>
             </div>
-        <?php } ?> 
+        <?php } ?>
 
         <!-- Formulaire de connexion -->
         <div class="row justify-content-center">

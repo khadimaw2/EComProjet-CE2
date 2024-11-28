@@ -27,3 +27,29 @@
 .row {
     row-gap: 20px; /* Espacement uniforme entre les lignes */
 }
+
+/* Réduction de la clarté pour les produits en rupture de stock */
+.product-card.stock-rupture {
+    opacity: 0.7;
+    filter: grayscale(80%);
+    position: relative;
+  }
+  
+  /* Label pour afficher "Rupture de stock" avec un design plus attrayant */
+  .stock-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(255, 0, 0, 0.8); /* Rouge transparent */
+    color: white;
+    padding: 10px 20px;
+    font-size: 1rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 30px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 10;
+    opacity: 0; /* Par défaut caché */
+    transition: opacity 0.3s ease-in-out; /* Animation douce */
+}

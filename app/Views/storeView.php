@@ -47,20 +47,18 @@
       </ul>
       
       <div class="tab-content" id="myTabContent">
+
         <!-- Section "Tout" -->
         <div class="tab-pane fade show active" id="category1" role="tabpanel" aria-labelledby="categorieTout-tab">
           <div class="row">
             <?php if (!empty($produits)) : ?>
+
               <?php foreach ($produits as $produit) : ?>
-                <div class="col-sm-6 col-md-4 col-lg-3 mb-4"> <!-- Utilisation de colonnes Bootstrap -->
-                  <div class="card product-card">
-                    <img src="<?= !empty($produit->getcheminImage()) ? "../ressources/".$produit->getcheminImage() : '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
-                    <div class="card-body">
-                      <h5 class="card-title"><?= $produit->getNom().' '.$produit->getPrixUnitaire().'$'; ?></h5>
-                      <p class="card-text text-truncate" style="max-height: 60px; overflow: hidden;"><?= $produit->getCourteDescription(); ?></p>
-                      <a href="../publics/details-produit.php?id=<?= $produit->getId(); ?>" class="btn btn-success w-100">Voir Details</a>
-                    </div>
-                  </div>
+                <?php $estEnStock = $produit->getQuantite() > 0; ?>
+                <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+
+                  <?php include 'affichageProduitStore.php' ?>
+    
                 </div>
               <?php endforeach; ?>
             <?php else : ?>
@@ -74,15 +72,12 @@
           <div class="row">
             <?php foreach ($produits as $produit) : ?>
               <?php if ($produit->getNomCategorie()=='Capillaire') : ?>
-                <div class="col-sm-6 col-md-4 col-lg-3 mb-4"> <!-- Utilisation de colonnes Bootstrap -->
-                  <div class="card product-card">
-                    <img src="<?= !empty($produit->getcheminImage()) ? "../ressources/".$produit->getcheminImage() : '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
-                    <div class="card-body">
-                      <h5 class="card-title"><?= $produit->getNom().' '.$produit->getPrixUnitaire().'$'; ?></h5>
-                      <p class="card-text text-truncate" style="max-height: 60px; overflow: hidden;"><?= $produit->getCourteDescription(); ?></p>
-                      <a href="../publics/details-produit.php?id=<?= $produit->getId(); ?>" class="btn btn-success w-100">Voir Details</a>
-                    </div>
-                  </div>
+
+                <?php $estEnStock = $produit->getQuantite() > 0; ?>
+                <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+
+                  <?php include 'affichageProduitStore.php' ?>
+    
                 </div>
               <?php endif; ?>
             <?php endforeach; ?>
@@ -94,15 +89,11 @@
           <div class="row">
             <?php foreach ($produits as $produit) : ?>
               <?php if ($produit->getNomCategorie() == 'Corporelle') : ?>
-                <div class="col-sm-6 col-md-4 col-lg-3 mb-4"> <!-- Utilisation de colonnes Bootstrap -->
-                  <div class="card product-card">
-                    <img src="<?= !empty($produit->getcheminImage()) ? "../ressources/".$produit->getcheminImage() : '../ressources/images-produit/image-back.png'; ?>" class="card-img-top" alt="Product Image">
-                    <div class="card-body">
-                      <h5 class="card-title"><?= $produit->getNom().' '.$produit->getPrixUnitaire().'$'; ?></h5>
-                      <p class="card-text text-truncate" style="max-height: 60px; overflow: hidden;"><?= $produit->getCourteDescription(); ?></p>
-                      <a href="../publics/details-produit.php?id=<?= $produit->getId(); ?>" class="btn btn-success w-100">Voir Details</a>
-                    </div>
-                  </div>
+                <?php $estEnStock = $produit->getQuantite() > 0; ?>
+                <div class="col-sm-6 col-md-4 col-lg-3 mb-4">
+
+                  <?php include 'affichageProduitStore.php' ?>
+    
                 </div>
               <?php endif; ?>
             <?php endforeach; ?>

@@ -15,7 +15,7 @@ class PanierController {
     }
 
      //Affiche la vue du formulaire 
-    public function afficherContenuPanier(){ 
+    public function afficherContenuPanier($errors = []){ 
         $panier = $_SESSION['panier'] ;
         $totalAPayer = 0;
         include __DIR__ . '/../Views/panierView.php';
@@ -86,19 +86,29 @@ class PanierController {
     }
 
     //Validation de la commande
-    public function passerCommande($idUtilisateur,$prixTotal) :void{
+    public function passerCommande($idUtilisateur, $prixTotal): void {
         try {
             $qteProduit = $this->calculerQteProduitsProduit();
-            $date =  date("Y-m-d H:i:s");
-            $commande = new Commande($date,$qteProduit,$prixTotal,$idUtilisateur,$_SESSION['panier']);
-            $this->commandeService->enregistrerCommande($commande);
-
-            $_SESSION['panier']=[];
-            header("Location: ../publics/panier.php");
-            exit;
+            $date = date("Y-m-d H:i:s");
+            $commande = new Commande($date, $qteProduit, $prixTotal, $idUtilisateur, $_SESSION['panier']);
+            $errors = $this->commandeService->traiterCommande($commande);
+    
+            if (!empty($errors)) {
+                $_SESSION['errors'] = $errors;
+                $this->afficherContenuPanier($errors);
+                exit;
+                return;
+            }
+            else {
+                unset( $_SESSION['errors']);
+                $_SESSION['panier'] = [];
+                header("Location: ../publics/panier.php");
+                exit;
+            }
         } catch (Exception $e) {
             GestionnaireErreur::redirigerVersErreurPage($e->getMessage());
-        }    
+        }
     }
+    
 
 }

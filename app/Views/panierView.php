@@ -10,6 +10,19 @@ include 'header.php';
         </div>
     </div>
 
+    <!-- Affichage des erreurs générales -->
+    <?php if (!empty($errors)) { ?>
+        <div class="row justify-content-center">
+            <div class="col-md-6 col-sm-12">
+                <div class="alert alert-danger text-center" role="alert">
+                    <?php foreach ($errors as $error) { ?>
+                        <i class="bi bi-exclamation-triangle-fill"></i> <?php echo htmlspecialchars($error); ?><br>
+                    <?php } ?>
+                </div>
+            </div>
+        </div>
+    <?php } ?>
+
     <?php if (!empty($_SESSION['panier'])) {?>
         <!-- Tableau des produits -->
         <div class="card shadow">
