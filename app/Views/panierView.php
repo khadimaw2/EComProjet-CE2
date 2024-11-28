@@ -104,18 +104,20 @@ include 'header.php';
 
     <?php } else { ?>
         <!-- Message si le panier est vide -->
-        <div class="row">
             <div class="col-12 text-center my-5">
-            <div class="d-flex justify-content-end mb-4">
-                <a class="btn btn-success" href="../publics/store.php">
-                    <i class="bi bi-plus-circle"></i> Magasinez
-                </a>
-            </div>
-                <div class="alert alert-warning" role="alert">
-                    <i class="bi bi-info-circle-fill"></i> Votre panier est vide.
+                <div class="row justify-content-center">
+                    <div class="col-md-6 col-sm-12">
+                        <div class="alert alert-warning" role="alert">
+                            <i class="bi bi-info-circle-fill"></i> Votre panier est vide.
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-center mb-4">
+                    <a class="btn btn-success" href="../publics/store.php">
+                        <i class="bi bi-plus-circle"></i> Magasinez
+                    </a>
                 </div>
             </div>
-        </div>
     <?php } ?>
 </div>
 </body>
