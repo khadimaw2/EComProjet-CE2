@@ -1,13 +1,11 @@
 <!-- Ajout d'une classe CSS pour réduire la clarté si le produit est en rupture -->
 <div class="card product-card <?= !$estEnStock ? 'stock-rupture' : ''; ?>">
-
-            <img src="<?= !empty($produit->getcheminImage()) ? "../ressources/".$produit->getcheminImage() : '../ressources/images-produit/image-back.png'; ?>" 
-                class="card-img-top" alt="Product Image">
-            <div class="card-body">
+    <img src="<?= !empty($produit->getcheminImage()) ? "../ressources/".$produit->getcheminImage() : '../ressources/images-produit/image-back.png'; ?>" 
+        class="card-img-top" alt="Product Image">
+        <div class="card-body">
             <h5 class="card-title">
                 <?= $produit->getNom().' '.$produit->getPrixUnitaire().'$'; 
-                if (!$estEnStock):  ?> 
-                    
+                if (!$estEnStock):  ?>                     
                     <span class="badge text-bg-danger">Rupture stock</span>  
                 <?php endif; ?>
             </h5>

@@ -51,7 +51,9 @@ require_once 'header.php';
                                              alt="Image produit">
                                     </td>
                                     <td><?= htmlspecialchars($produit->getNom()); ?></td>
-                                    <td><?= htmlspecialchars($produit->getQuantite()); ?></td>
+                                    <td>
+                                    <?= $produit->getQuantite() > 0 ? htmlspecialchars($produit->getQuantite()) : "<span class='badge text-bg-danger'>Rupture stock</span>" ?>
+                                    </td>
                                     <td>$<?= number_format($produit->getPrixUnitaire(), 2); ?></td>
                                     <td><?= htmlspecialchars($produit->getNomCategorie()); ?></td>
                                     <td class="text-center">

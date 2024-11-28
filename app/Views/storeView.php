@@ -101,7 +101,5 @@
         </div>
       </div>
     </div>
-
-    <!-- Optional JavaScript -->
   </body>
 </html>
