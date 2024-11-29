@@ -6,7 +6,7 @@
             <h5 class="card-title">
                 <?= $produit->getNom().' '.$produit->getPrixUnitaire().'$'; 
                 if (!$estEnStock):  ?>                     
-                    <span class="badge text-bg-danger">Rupture stock</span>  
+                    <span class="badge text-bg-danger ">Rupture stock</span>  
                 <?php endif; ?>
             </h5>
                 <p class="card-text text-truncate" style="max-height: 60px; overflow: hidden;"><?= $produit->getCourteDescription(); ?></p>

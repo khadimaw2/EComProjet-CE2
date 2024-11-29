@@ -86,7 +86,14 @@
         <hr>
         <!-- Informations personnelles -->
         <div class="info-container">
-            <p><span>Prenom :</span> <?= htmlspecialchars($_SESSION['utilisateur']->getPrenom()) ?></p>
+            <p>
+                <span>Prenom :</span> <?= htmlspecialchars($_SESSION['utilisateur']->getPrenom())?>
+                <?php if ($_SESSION['utilisateur']->getRole()== 'admin') {?>
+                    <i class="bi bi-patch-check-fill text-warning"></i>
+                <?php }elseif ($_SESSION['utilisateur']->getRole()== 'employer') {?>
+                    <i class="bi bi-patch-check-fill text-info"></i>
+                <?php } ?>
+            </p>
             <p><span>Nom :</span> <?= htmlspecialchars($_SESSION['utilisateur']->getNom()) ?></p>
             <p><span>Courriel :</span> <?= htmlspecialchars($_SESSION['utilisateur']->getCourriel()) ?></p>
             <p><span>Telephone :</span> <?= htmlspecialchars($_SESSION['utilisateur']->getTelephone()) ?></p>

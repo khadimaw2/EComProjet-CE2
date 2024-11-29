@@ -46,7 +46,7 @@ require_once 'header.php';
                                             if ($utilisateur->getRole() === 'admin') {
                                                 echo 'bg-warning text-dark'; // Gold pour Admin
                                             } elseif ($utilisateur->getRole() === 'employer') {
-                                                echo 'bg-success'; // Vert pour Employer
+                                                echo 'bg-info'; // Vert pour Employer
                                             } else {
                                                 echo 'bg-secondary'; // Gris pour Client
                                             }
