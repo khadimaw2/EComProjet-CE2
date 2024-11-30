@@ -2,6 +2,7 @@
     namespace App\Services;
 
     use App\Models\Commande;
+    use App\Models\Produit;
     use App\Models\Utilisateur;
     use Exception;
     use PDOException;
@@ -125,8 +126,8 @@
             $connexion = Database::recupererConnexion();
             try {
                 $connexion->beginTransaction(); 
-                $sql = "INSERT INTO commande(date_commande, quantite_commande, prix_total, id_utilisateur) 
-                        VALUES (:dateCommande, :qteCommande, :prixTotale, :idUtilisateur)";
+                $sql = "INSERT INTO commande(date_commande, quantite_commande, prix_total, id_utilisateur, livree) 
+                        VALUES (:dateCommande, :qteCommande, :prixTotale, :idUtilisateur,0)";
                 $requette = $connexion->prepare($sql); 
         
                 $requette->execute([
@@ -161,20 +162,113 @@
         }
         
         //Recupere les commandes d'un utilisateur donné
-        public function recupererCommandeUtilisateur($idUtilisateur){
-            $connexion = Database::recupererConnexion();
+        public function recupererCommandesUtilisateur($idUtilisateur){
             try {
+                $connexion = Database::recupererConnexion();
                 $connexion->beginTransaction(); 
         
-                $sql = "";
+                $sql = "SELECT * FROM commande WHERE id_utilisateur = :idUtilisateur";
+
                 $requette = $connexion->prepare($sql); 
-        
                 $requette->execute([
-                    ':idUtilisateur' => $idUtilisateur, 
+                    ':idUtilisateur' => $idUtilisateur
                 ]) ;
+
+                $donneesCommande = $requette->fetchAll(PDO::FETCH_ASSOC);
+                $commandes = array_map(fn($donnee) => Commande::InitialiserAvecTableau($donnee), $donneesCommande);
+                return $commandes;
+
             } catch (PDOException $e) {
                 $connexion->rollBack();
-                throw new Exception("Erreur lors de l'enregistrement de la commande : " . $e->getMessage());
+                throw new Exception("Erreur lors de la recuperation des commandes : " . $e->getMessage());
+            }
+        }
+
+        //Recupere toutes les commandes du syteme
+        public function recupererToutesLesCommandes() {
+            try {
+                $connexion = Database::recupererConnexion();
+        
+                $sql = "SELECT * FROM commande";
+                $requette = $connexion->prepare($sql);
+                $requette->execute();
+        
+                $donneesCommande = $requette->fetchAll(PDO::FETCH_ASSOC);
+                return array_map(fn($donnee) => Commande::InitialiserAvecTableau($donnee), $donneesCommande);
+        
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de la récupération des commandes : " . $e->getMessage());
+            }
+        }
+        
+
+        //Met a jour la a colonne livree de la commande a 1
+        public function confirmerLivraison($idCommande){
+            try {
+                $connexion = Database::recupererConnexion();
+                $connexion->beginTransaction(); 
+        
+                $sql = "UPDATE commande SET livree = 1 WHERE id_commande = :idCommande";
+
+                $requette = $connexion->prepare($sql); 
+                $requette->execute([
+                    ':idCommande' =>$idCommande 
+                ]) ;
+                if ($requette->rowCount() === 0) {
+                    throw new Exception("ID ou action sur le produit invalide");
+                }
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de la recuperation des commandes : " . $e->getMessage());
+            }
+
+        }
+
+
+        //Recuperer tous les produits dans une commande
+        public function recupererProduitsCommande($idCommande){
+            try {
+                $connexion = Database::recupererConnexion();
+                $connexion->beginTransaction(); 
+        
+                $sql = "SELECT p.id_produit AS id, p.nom AS nom, p.prix_unitaire AS prix_unitaire, 
+                           p.description AS description, p.courte_description AS courte_description, 
+                           p.quantite AS quantite, p.id_categorie AS id_categorie, 
+                           c.nom_categorie AS nom_categorie, i.chemin AS chemin_image
+                        FROM categorie c 
+                        JOIN produit p ON p.id_categorie = c.id_categorie
+                        LEFT JOIN image i ON p.id_produit = i.id_produit
+                        WHERE id_commande= :idCommande";
+
+                $requette = $connexion->prepare($sql); 
+                $requette->execute([
+                    ':idCommande' =>$idCommande 
+                ]) ;
+
+                $donneesProduit = $requette->fetchAll(PDO::FETCH_ASSOC);
+                $produits = array_map(fn($donnee) => Produit::InitialiserAvecTableau($donnee),$donneesProduit);
+                return $produits;
+
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de la recuperation des commandes : " . $e->getMessage());
+            }
+        }
+
+        //Aide la vue a afficher les commandes en evitant les repertion
+        public static function afficherCommandes($commandes, $utilisateurService, $adressService, $statut,$tout) {
+            $i = 1;
+            foreach ($commandes as $commande){
+               if ($tout) {
+                    $utilisateur = $utilisateurService->recupererInfosUtilisateurParId($commande->getIdUtilisateur());
+                    $adressClient = $adressService->recupererChaineAdressUtilisateur($commande->getIdUtilisateur());
+                    include __DIR__ . '/../Views/commandeTbodyTr.php';
+               }
+               else{
+                    if ($commande->getStatut() == $statut) {
+                        $utilisateur = $utilisateurService->recupererInfosUtilisateurParId($commande->getIdUtilisateur());
+                        $adressClient = $adressService->recupererChaineAdressUtilisateur($commande->getIdUtilisateur());
+                        include __DIR__ . '/../Views/commandeTbodyTr.php';
+                    }
+               }
             }
         }
         

@@ -86,19 +86,19 @@
         <hr>
         <!-- Informations personnelles -->
         <div class="info-container">
-            <p>
+            <p class="fw-bold">
                 <span>Prenom :</span> <?= htmlspecialchars($_SESSION['utilisateur']->getPrenom())?>
                 <?php if ($_SESSION['utilisateur']->getRole()== 'admin') {?>
                     <i class="bi bi-patch-check-fill text-warning"></i>
                 <?php }elseif ($_SESSION['utilisateur']->getRole()== 'employer') {?>
-                    <i class="bi bi-patch-check-fill text-info"></i>
+                    <i class="bi bi-patch-check-fill text-success"></i>
                 <?php } ?>
             </p>
-            <p><span>Nom :</span> <?= htmlspecialchars($_SESSION['utilisateur']->getNom()) ?></p>
-            <p><span>Courriel :</span> <?= htmlspecialchars($_SESSION['utilisateur']->getCourriel()) ?></p>
-            <p><span>Telephone :</span> <?= htmlspecialchars($_SESSION['utilisateur']->getTelephone()) ?></p>
-            <p><span>Date de naissance :</span> <?= htmlspecialchars($_SESSION['utilisateur']->getDateNaissance()) ?></p>
-            <p><span>Adresse :</span> <?= htmlspecialchars($_SESSION['utilisateur']->getAdresse()) ?></p>
+            <p class="fw-bold"><span>Nom :</span> <?= htmlspecialchars($_SESSION['utilisateur']->getNom()) ?></p>
+            <p class="fw-bold"><span>Courriel :</span> <?= htmlspecialchars($_SESSION['utilisateur']->getCourriel()) ?></p>
+            <p class="fw-bold"><span>Telephone :</span> <?= htmlspecialchars($_SESSION['utilisateur']->getTelephone()) ?></p>
+            <p class="fw-bold"><span>Date de naissance :</span> <?= htmlspecialchars($_SESSION['utilisateur']->getDateNaissance()) ?></p>
+            <p class="fw-bold"><span>Adresse :</span> <?= htmlspecialchars($_SESSION['utilisateur']->getAdresse()) ?></p>
         </div>
     </div>
 

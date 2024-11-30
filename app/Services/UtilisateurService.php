@@ -190,32 +190,36 @@ class UtilisateurService {
     }
 
     //Recuperer un utilisateur via son id
-    public function recupererInfosUtilisateurParId($idUtilisateur){
+    // Récupérer un utilisateur via son id
+    public function recupererInfosUtilisateurParId($idUtilisateur) {
         try {
             $sql = "SELECT u.*, r.description 
                     FROM Utilisateur u
                     JOIN Role_utilisateur ru ON u.id_utilisateur = ru.id_utilisateur
                     JOIN Role r ON ru.id_role = r.id_role
-                    WHERE id_utilisateur = :idUtilisateur";
+                    WHERE u.id_utilisateur = :idUtilisateur";
+            
             $connexion = Database::recupererConnexion();
             $requette = $connexion->prepare($sql);
             $requette->execute([':idUtilisateur' => $idUtilisateur]);
-    
+        
             $utilisateur = $requette->fetch(PDO::FETCH_ASSOC);
+            
             if (!$utilisateur) {
-                throw new Exception("Impossible de trouvé un utilisateur avec cet id.");
+                throw new Exception("Impossible de trouver un utilisateur avec l'ID : " . $idUtilisateur);
             }
+
             unset($utilisateur['mot_de_passe']);
+
             return $this->transformerEnInstanceUtilisateur($utilisateur);
 
-        }catch(PDOException $e) {
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors de la récupération des informations de l'utilisateur : " . $e->getMessage());
+        } catch (Exception $e) {
             throw new Exception("Erreur lors de la récupération des informations de l'utilisateur : " . $e->getMessage());
         }
-        catch (Exception $e) {
-            throw new Exception("Erreur lors de la récupération des informations de l'utilisateur : " . $e->getMessage());
-        }
-
     }
+
 
     //Supprimer un utilisateur via son id
     public function supprimerUtilisateur($idUtilisateur) : void{

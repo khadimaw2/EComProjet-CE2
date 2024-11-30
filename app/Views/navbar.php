@@ -40,7 +40,7 @@
 
                         <li class="nav-item"><a class="nav-link text-light" href="../publics/liste-utilisateurs.php">Gestion utilisateurs</a></li>
 
-                        <li class="nav-item"><a class="nav-link text-light" href="listeToutesLesCommandes.php">Gestion Commandes</a></li>
+                        <li class="nav-item"><a class="nav-link text-light" href="toutes-les-commandes.php">Gestion Commandes</a></li>
 
                 <?php } ?>
             </ul>

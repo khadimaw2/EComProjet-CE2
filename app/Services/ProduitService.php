@@ -250,6 +250,6 @@ class ProduitService {
         }catch (Exception $e) {
             throw new Exception("Erreur lors de la suppression du produit : " . $e->getMessage());
         }
-    }
+    }    
 }
 ?>

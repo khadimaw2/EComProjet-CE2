@@ -3,22 +3,53 @@ namespace App\Models ;
 
 class Commande
 {
+    private int $idCommande;
     private string $date;
     private int $quantite;
     private int $prixTotal;
     private int $idUtilisateur;
     private array $produits;
+    private int $statut;
 
     // Constructeur
-    public function __construct(string $date = "", int $quantite = 0, int $prixTotal, int $idUtilisateur = 0, array $produits) {
+    public function __construct(
+        int $idCommande, 
+        string $date = "", 
+        int $quantite, 
+        int $prixTotal, 
+        int $idUtilisateur, 
+        array $produits, 
+        int $statut
+    ) {
+        $this->idCommande = $idCommande;
         $this->date = $date ?: date("Y-m-d H:i:s"); 
         $this->quantite = $quantite;
         $this->prixTotal = $prixTotal;
         $this->idUtilisateur = $idUtilisateur;
         $this->produits = $produits;
+        $this->statut = $statut;
+    }
+
+    // Méthode statique pour créer une commande à partir d'un tableau
+    public static function InitialiserAvecTableau(array $donnee): self {
+        return new self(
+            $donnee['id_commande'] ?? 0,
+            $donnee['date_commande'] ?? '',
+            $donnee['quantite_commande'] ?? 0, 
+            $donnee['prix_total'] ?? 0, 
+            $donnee['id_utilisateur'] ?? 0, 
+            isset($donnee['produits']) ? json_decode($donnee['produits'], true) : [],
+            $donnee['livree'] ?? 0 
+        );
     }
 
     //Getters
+
+    public function getIdCommande(): int
+    {
+        return $this->idCommande;
+    }
+
     public function getDate(): string
     {
         return $this->date;
@@ -42,6 +73,11 @@ class Commande
     public function getProduits(): array
     {
         return $this->produits;
+    }
+
+    public function getStatut(): int
+    {
+        return $this->statut;
     }
 
     // Setters

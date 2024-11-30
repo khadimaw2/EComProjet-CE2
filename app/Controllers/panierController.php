@@ -90,7 +90,7 @@ class PanierController {
         try {
             $qteProduit = $this->calculerQteProduitsProduit();
             $date = date("Y-m-d H:i:s");
-            $commande = new Commande($date, $qteProduit, $prixTotal, $idUtilisateur, $_SESSION['panier']);
+            $commande = new Commande(0,$date, $qteProduit, $prixTotal, $idUtilisateur, $_SESSION['panier'],0);
             $errors = $this->commandeService->traiterCommande($commande);
     
             if (!empty($errors)) {
