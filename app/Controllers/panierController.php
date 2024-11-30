@@ -6,6 +6,7 @@ use App\Services\CommandeService;
 use App\Models\Produit; 
 use Exception;
 use App\Services\GestionnaireErreur;
+use App\Services\RedirectionPage;
 
 class PanierController {
     private $commandeService;
@@ -43,8 +44,7 @@ class PanierController {
             } else {
                 throw new Exception("Action invalide pour la modification de la quantité.");
             }
-            header("Location: ../publics/panier.php");
-            exit;
+            RedirectionPage::redirrigersVersPage('panier.php');
         } catch (Exception $e) {
             GestionnaireErreur::redirigerVersErreurPage($e->getMessage());
         }
@@ -102,8 +102,7 @@ class PanierController {
             else {
                 unset( $_SESSION['errors']);
                 $_SESSION['panier'] = [];
-                header("Location: ../publics/panier.php");
-                exit;
+                RedirectionPage::redirrigersVersPage('panier.php');
             }
         } catch (Exception $e) {
             GestionnaireErreur::redirigerVersErreurPage($e->getMessage());

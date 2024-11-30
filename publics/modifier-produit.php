@@ -4,6 +4,9 @@
     use App\Services\GestionnaireErreur;
     use App\Models\Produit;
     use App\Services\ProduitService;
+    use App\Services\RedirectionPage;
+
+    RedirectionPage::redirigerClientStore();
 
     $modifierProduitController = new modifierProduitController();
     $produitService = new ProduitService();

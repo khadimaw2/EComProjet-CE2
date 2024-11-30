@@ -1,9 +1,11 @@
 <?php 
    require_once __DIR__ . '/../vendor/autoload.php';
-
    use App\Controllers\ListeProduitsController;
    use App\Models\Produit;
    use App\Services\GestionnaireErreur;
+   use App\Services\RedirectionPage;
+
+   RedirectionPage::redirigerClientStore();
 
    $listeProduitsController = new ListeProduitsController();
    

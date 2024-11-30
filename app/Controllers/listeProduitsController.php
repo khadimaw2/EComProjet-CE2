@@ -4,6 +4,7 @@ namespace App\Controllers;
 use App\Services\ProduitService; 
 use Exception;
 use App\Services\GestionnaireErreur;
+use App\Services\RedirectionPage;
 
 class ListeProduitsController {
     private $produitService;

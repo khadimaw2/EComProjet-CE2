@@ -7,6 +7,8 @@ use App\Services\ValidateurDeFormulaire;
 use App\Models\Utilisateur; 
 use App\Services\GestionnaireErreur;
 use Exception;
+use App\Services\RedirectionPage;
+
 if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
@@ -37,8 +39,7 @@ class EnregistrementAdressController{
                 $_SESSION['utilisateur']->setAdress($this->adressService->recupererChaineAdressUtilisateur($idUtilisateur));
                 
                 ValidateurDeFormulaire::unsetSessionVariables(['errors','values']);
-                header("Location: ../publics/panier.php");
-                exit;
+                RedirectionPage::redirrigersVersPage('panier.php');
             } 
             else {
                 $_SESSION['errors'] = $errors;

@@ -5,6 +5,7 @@ use App\Services\UtilisateurService;
 use App\Services\ValidateurDeFormulaire;  
 use App\Models\Utilisateur; 
 use App\Services\GestionnaireErreur;
+use App\Services\RedirectionPage;
 use Exception;
 
 class InscriptionController {
@@ -29,8 +30,7 @@ class InscriptionController {
                 $utilisateur =  Utilisateur::InitialiserAvecTableau($donnee);
                 $this->utilisateurService->inscrireUtilisateur($utilisateur);
                 ValidateurDeFormulaire::unsetSessionVariables(['errors','values']);
-                header("Location: ../publics/connexion.php");
-                exit;
+                RedirectionPage::redirrigersVersPage('panier.php');
             } 
             else {
                 // Stocke erreurs et valeurs pour ré-affichage

@@ -5,6 +5,7 @@
     use App\Services\ProduitService;
     use App\Services\GestionnaireErreur;
     use Exception;
+    use App\Services\RedirectionPage;
 
     class DetailsProduitController{
         private $produitService;
@@ -41,9 +42,8 @@
 
                 $this->ajoutOuMajPanier($idProduit, $produit);
                 
-    
-                header("Location: ../publics/panier.php");
-                exit;
+                RedirectionPage::redirrigersVersPage('panier.php');
+            
             } catch (Exception $e) {
                 GestionnaireErreur::redirigerVersErreurPage($e->getMessage());
             }

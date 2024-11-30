@@ -5,6 +5,7 @@
     use App\Services\ProduitService; 
     use App\Services\GestionnaireErreur;
     use App\Services\ValidateurDeFormulaire;
+    use App\Services\RedirectionPage;
     use Exception;
 
     class ModifierProduitController{
@@ -41,7 +42,7 @@
                         $this->redirigerVersFormulaireAvecErreur($errors, $values);
                     } else {
                         ValidateurDeFormulaire::unsetSessionVariables(['errors', 'values']);
-                        $this->redirigerVersPage('liste-produits.php');
+                        RedirectionPage::redirrigersVersPage('panier.php');
                     }
                 } else {
                     
@@ -52,12 +53,6 @@
             }
         }
         
-
-        // Fonction utilitaire pour la redirection
-        private function redirigerVersPage(string $page) {
-            header("Location: ../publics/$page");
-            exit;
-        }
         
         //Verifie si le champs image du formulaire est vide ou nom
         private function imageVide(array $fichiers): bool {

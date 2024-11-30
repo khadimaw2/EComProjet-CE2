@@ -5,6 +5,7 @@ use App\Models\Utilisateur;
 use App\Services\UtilisateurService ; 
 use App\Services\ValidateurDeFormulaire ; 
 use App\Services\GestionnaireErreur;
+use App\Services\RedirectionPage;
 use Exception;
 session_start();
 
@@ -37,7 +38,7 @@ session_start();
                         $utilisateur->setMotDePasse('');
                         $_SESSION['utilisateur'] = $utilisateur;
                         ValidateurDeFormulaire::unsetSessionVariables(['errors','values']);
-                        header("Location: ../publics/store.php");
+                        RedirectionPage::redirrigersVersPage('store.php');
                         exit;
                     }
                 }else {

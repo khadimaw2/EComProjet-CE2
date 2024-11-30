@@ -5,6 +5,7 @@
     use App\Services\ProduitService; 
     use App\Services\GestionnaireErreur;
     use App\Services\ValidateurDeFormulaire;
+    use App\Services\RedirectionPage;
     use Exception;
     
     class AjoutProduitController{
@@ -28,8 +29,7 @@
                     $produit = Produit::InitialiserAvecTableau($donnee);
                     $this->produitService->ajoutCompletProduit($produit,$image);
                     ValidateurDeFormulaire::unsetSessionVariables(['errors','values']);
-                    header("Location: ../publics/store.php");
-                    exit;
+                    RedirectionPage::redirrigersVersPage('liste-produits.php');
                 }
                 else {
                     $_SESSION['errors'] = $errors;
