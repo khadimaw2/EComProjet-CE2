@@ -25,7 +25,7 @@ $roleConnecte = $_SESSION['utilisateur']->getRole();
         </a>
 
         <!-- Bouton Valider Livraison -->
-        <form method="POST" action="../publics/liste-toutes-les-commandes.php" class="d-inline" 
+        <form method="POST" action="../publics/toutes-les-commandes.php" class="d-inline" 
               onsubmit="return confirm('Êtes-vous sûr de vouloir valider la livraison ?');">
             <input type="hidden" name="action" value="valider-livraison">
             <input type="hidden" name="id" value="<?= $commande->getIdCommande(); ?>">
@@ -35,9 +35,9 @@ $roleConnecte = $_SESSION['utilisateur']->getRole();
         </form>
 
         <!-- Bouton Dévalider Livraison (Réinitialiser) -->
-        <form method="POST" action="../publics/liste-toutes-les-commandes.php" class="d-inline" 
+        <form method="POST" action="../publics/toutes-les-commandes.php" class="d-inline" 
               onsubmit="return confirm('Êtes-vous sûr de vouloir annuler la livraison ?');">
-            <input type="hidden" name="action" value="devalider-livraison">
+            <input type="hidden" name="action" value="reinitialiser-livraison">
             <input type="hidden" name="id" value="<?= $commande->getIdCommande(); ?>">
             <button type="submit" class="btn btn-sm btn-warning" title="Annuler la livraison">
                 <i class="bi bi-arrow-counterclockwise"></i> 
@@ -45,7 +45,7 @@ $roleConnecte = $_SESSION['utilisateur']->getRole();
         </form>
 
         <!-- Bouton Supprimer (uniquement pour l'admin) -->
-        <form method="POST" action="../publics/liste-toutes-les-commandes.php" class="d-inline" 
+        <form method="POST" action="../publics/toutes-les-commandes.php" class="d-inline" 
               onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette commande ?');">
             <input type="hidden" name="action" value="supprimer">
             <input type="hidden" name="id" value="<?= $commande->getIdCommande(); ?>">

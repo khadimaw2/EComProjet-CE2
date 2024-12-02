@@ -206,8 +206,6 @@
         public function confirmerLivraison($idCommande){
             try {
                 $connexion = Database::recupererConnexion();
-                $connexion->beginTransaction(); 
-        
                 $sql = "UPDATE commande SET livree = 1 WHERE id_commande = :idCommande";
 
                 $requette = $connexion->prepare($sql); 
@@ -215,10 +213,30 @@
                     ':idCommande' =>$idCommande 
                 ]) ;
                 if ($requette->rowCount() === 0) {
-                    throw new Exception("ID ou action sur le produit invalide");
+                    throw new Exception("ID ou action sur la commande invalide");
                 }
             } catch (PDOException $e) {
-                throw new Exception("Erreur lors de la recuperation des commandes : " . $e->getMessage());
+                throw new Exception("Erreur lors de la confirmation des commandes : " . $e->getMessage());
+            }
+
+        }
+
+        //Met a jour la a colonne livree de la commande a , a refactoriser avec la fonction precedente plustardd
+        public function reinitialiserLivraison($idCommande){
+            try {
+                $connexion = Database::recupererConnexion();
+        
+                $sql = "UPDATE commande SET livree = 0 WHERE id_commande = :idCommande";
+
+                $requette = $connexion->prepare($sql); 
+                $requette->execute([
+                    ':idCommande' =>$idCommande 
+                ]) ;
+                if ($requette->rowCount() === 0) {
+                    throw new Exception("ID ou action sur la commande invalide");
+                }
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de la confirmation des commandes : " . $e->getMessage());
             }
 
         }
@@ -271,6 +289,22 @@
                }
             }
         }
+
+         //Supprime une commande de la Bd
+        public function supprimerCommande($idCommande){
+            try {
+                $connexion = Database::recupererConnexion();    
+                $sql = "DELETE FROM commande WHERE id_commande = :idCommande";
+
+                $requette = $connexion->prepare($sql); 
+                $requette->execute([
+                    ':idCommande' =>$idCommande 
+                ]);
+            } catch (PDOException $e) {
+                throw new Exception("Erreur lors de la recuperation des commandes : " . $e->getMessage());
+            }
+        }
+        
         
     }
 
