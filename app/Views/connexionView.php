@@ -66,7 +66,7 @@ use App\Services\ValidateurDeFormulaire;
                                 <button type="submit" class="btn btn-success fw-bold" name="btn-connection">
                                     <i class="bi bi-box-arrow-in-right"></i> Se connecter
                                 </button>
-                                <button type="submit" class="btn btn-secondary fw-bold" name="btn_mot_de_passe_oublie">
+                                <button type="submit" class="btn btn-secondary fw-bold" name="btn-mot-de-passe-oublie">
                                     <i class="bi bi-question-circle"></i> Mot de passe oublié
                                 </button>
                             </div>

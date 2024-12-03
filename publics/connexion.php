@@ -11,7 +11,12 @@
     }
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $connexionController->connexion($_POST);
+        if (isset($_POST['btn-connection'])) {
+            $connexionController->connexion($_POST);
+        }
+        elseif (isset($_POST['btn-mot-de-passe-oublie'])) {
+            $connexionController->verifierDemande($_POST);
+        }
     }else {
         $connexionController->afficherFormulaireConnexion();
     }

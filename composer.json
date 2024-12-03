@@ -11,5 +11,7 @@
             "email": "khadimaw2000@gmail.com"
         }
     ],
-    "require": {}
+    "require": {
+        "wildbit/postmark-php": "^6.0"
+    }
 }

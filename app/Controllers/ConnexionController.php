@@ -7,6 +7,8 @@ use App\Services\ValidateurDeFormulaire ;
 use App\Services\GestionnaireErreur;
 use App\Services\RedirectionPage;
 use Exception;
+use Postmark\PostmarkClient;
+
 session_start();
 
     class ConnexionController{
@@ -53,9 +55,32 @@ session_start();
             
         }
 
+        public function verifierDemande($donneesFormulaire){
+            try {
+                $errors = ValidateurDeFormulaire::verifierFormDemandeRenetialisation($donneesFormulaire);
+            
+                if (empty($errors)) {
+                    
+                }else {
+                    $_SESSION['errors'] = $errors;
+                    $this->afficherFormulaireConnexion($errors);
+                }
+            } catch (Exception $e) {
+                GestionnaireErreur::redirigerVersErreurPage($e->getMessage());
+            }
+        }
+
+        // Fonction d'envoie d'email 
+        private function envoieEmail(){
+            
+        }
+
+        //Deconnexion de l'utilisateur
         public function deconnexion(): void {
             unset($_SESSION['utilisateur']);
         }
+
+
         
     }
 ?>

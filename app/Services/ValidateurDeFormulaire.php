@@ -5,6 +5,7 @@ use DateTime;
 use App\Services\UtilisateurService ;
 
 class ValidateurDeFormulaire {
+
     //Verifaction de la nullite d'un champs.Retourne un message d'erreur si vide et null sino
     private static function verifierChampsObligatoire($champs, $message){
         return empty($champs) ? $message : null;
@@ -69,6 +70,50 @@ class ValidateurDeFormulaire {
         }
 
         return [$errors, $values ];
+    }
+
+    //Verifier Formulaire pour demande de renetialisation de mdp
+    public static function verifierFormDemandeRenetialisation($donnee){
+
+        $utilisateurService = new UtilisateurService();
+        $errors =[];
+
+        //valider courriel
+        $error = self::verifierChampsObligatoire($donnee['courriel'], "Le courriel est obligatoire");
+        if ($error) {
+            $errors['courriel'] = $error ;
+        }else {
+            $courriel = $utilisateurService->recupererCourriel($donnee['courriel']);
+            if (!$courriel) {
+                $errors['courriel'] = "Email incorrect, Reessayez !";
+            }
+        }
+        
+        return $errors;
+    }
+
+    //Valider formulaire mot de passe oublié
+    public static function validerFormulaireMdpOublie($donnee){
+        $errors = [];
+        $values = [];
+
+        //valider mot de passe
+        $error = self::verifierChampsObligatoire($donnee['mot_de_passe'], "Le mot de passe est obligatoire");
+        if ($error) {
+            $errors['mot_de_passe'] = $error ;
+        }else {
+            $values['mot_de_passe'] = htmlspecialchars($donnee['mot_de_passe'])  ;
+        }
+    
+        // Validation de la confirmation du mot de passe
+        $error = self::validerMotDePasseConfirmation($donnee["mot_de_passe"], $donnee["c_mot_de_passe"]);
+        if ($error) {
+            $errors["c_mot_de_passe"] = $error;
+        } else {
+            $values["mot_de_passe"] = htmlspecialchars($donnee["mot_de_passe"]);
+        }
+    
+        return [$errors, $values];
     }
 
     // Valider les données du formulaire d'inscription
@@ -178,6 +223,7 @@ class ValidateurDeFormulaire {
         return [$errors, $values];
     }
 
+    //Valider formulaire d'ajout d'adresse 
     public static function validerFormulaireAdress($donnee){
         $errors = [];
         $values = [];
@@ -204,5 +250,4 @@ class ValidateurDeFormulaire {
         return [$errors, $values];
     }
 
-    
 }

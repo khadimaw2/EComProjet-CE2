@@ -190,7 +190,6 @@ class UtilisateurService {
     }
 
     //Recuperer un utilisateur via son id
-    // Récupérer un utilisateur via son id
     public function recupererInfosUtilisateurParId($idUtilisateur) {
         try {
             $sql = "SELECT u.*, r.description 
@@ -219,7 +218,6 @@ class UtilisateurService {
             throw new Exception("Erreur lors de la récupération des informations de l'utilisateur : " . $e->getMessage());
         }
     }
-
 
     //Supprimer un utilisateur via son id
     public function supprimerUtilisateur($idUtilisateur) : void{
@@ -254,6 +252,31 @@ class UtilisateurService {
             $requete->rowCount() > 0 ?? throw new Exception("Id ou role de l'utilisateur invalide") ;       
         } catch (PDOException $e) {
             throw new Exception("Erreur lors de la modification du role (de admin a Client)".$e);   
+        }
+    }
+
+    //Maj mot de passe utilisateur
+    public function majMdp($mdp, $courriel){
+        try {
+            $sql = "UPDATE utilisateur SET mot_de_passe = :mdpHash WHERE courriel = :courriel";
+
+            $connexion = Database::recupererConnexion();
+
+            $requete = $connexion->prepare($sql);
+            $mdpHash = password_hash($mdp,PASSWORD_DEFAULT);
+            
+            $requete->execute([
+                ':courriel'=>$courriel,
+                ':mdpHash'=>$mdpHash
+            ]);
+
+            // if ($requete->rowCount() === 0) {
+            //     throw new Exception("Courriel inexistant introuvable");
+            // }
+
+            $requete->rowCount() > 0 ?? throw new Exception("Id ou role de l'utilisateur invalide") ;       
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors de la mdj du mdp de l'utilisateur".$e);   
         }
     }
 
