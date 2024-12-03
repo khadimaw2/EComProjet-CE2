@@ -21,9 +21,7 @@ class   ToutesLesCommandesController {
             include __DIR__ . '/../Views/toutesLesCommandesView.php';
 
         } catch (Exception $e) {
-            //GestionnaireErreur::redirigerVersErreurPage($e->getMessage());
-            var_dump($commandes);
-            echo $e->getMessage();
+            GestionnaireErreur::redirigerVersErreurPage($e->getMessage());
         }
     }
 

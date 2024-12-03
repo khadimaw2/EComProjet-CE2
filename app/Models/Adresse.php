@@ -77,7 +77,7 @@ class Adresse {
     public function setProvince(string $province): void {
         $this->province = $province;
     }
-
+    
     // Méthode pour modifier l'adresse (exemple)
     public function modifier(array $nouvellesValeurs): bool {
         if(isset($nouvellesValeurs['rue'])) $this->rue = $nouvellesValeurs['rue'];

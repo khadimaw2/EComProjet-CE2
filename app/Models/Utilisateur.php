@@ -107,5 +107,9 @@ class Utilisateur {
     public function setRole(string $role): void {
         $this->role = $role;
     }
+
+    public function setAdress(string $adresse): void {
+        $this->adresse = $adresse;
+    }
 }
 ?>

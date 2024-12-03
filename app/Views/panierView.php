@@ -96,7 +96,12 @@ include 'header.php';
                 </table>
             </div>
             <div class="card-footer text-end fw-bold">
-                Total à payer : $<?= number_format($totalAPayer, 2); ?>
+            <h5>
+                Total à payer :
+                <span class="badge text-bg-danger">
+                    $<?= number_format($totalAPayer, 2); ?>
+                </span>
+            </h5>
             </div>
         </div>
 

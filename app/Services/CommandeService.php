@@ -164,9 +164,7 @@
         //Recupere les commandes d'un utilisateur donné
         public function recupererCommandesUtilisateur($idUtilisateur){
             try {
-                $connexion = Database::recupererConnexion();
-                $connexion->beginTransaction(); 
-        
+                $connexion = Database::recupererConnexion();    
                 $sql = "SELECT * FROM commande WHERE id_utilisateur = :idUtilisateur";
 
                 $requette = $connexion->prepare($sql); 
@@ -175,11 +173,9 @@
                 ]) ;
 
                 $donneesCommande = $requette->fetchAll(PDO::FETCH_ASSOC);
-                $commandes = array_map(fn($donnee) => Commande::InitialiserAvecTableau($donnee), $donneesCommande);
-                return $commandes;
+                return array_map(fn($donnee) => Commande::InitialiserAvecTableau($donnee), $donneesCommande);
 
             } catch (PDOException $e) {
-                $connexion->rollBack();
                 throw new Exception("Erreur lors de la recuperation des commandes : " . $e->getMessage());
             }
         }
@@ -242,34 +238,47 @@
         }
 
 
-        //Recuperer tous les produits dans une commande
-        public function recupererProduitsCommande($idCommande){
+       // Récupérer tous les ids et quantités des produits dans une commande
+        private function recupererInfoProduitsCommande($idCommande) {
             try {
-                $connexion = Database::recupererConnexion();
-                $connexion->beginTransaction(); 
-        
-                $sql = "SELECT p.id_produit AS id, p.nom AS nom, p.prix_unitaire AS prix_unitaire, 
-                           p.description AS description, p.courte_description AS courte_description, 
-                           p.quantite AS quantite, p.id_categorie AS id_categorie, 
-                           c.nom_categorie AS nom_categorie, i.chemin AS chemin_image
-                        FROM categorie c 
-                        JOIN produit p ON p.id_categorie = c.id_categorie
-                        LEFT JOIN image i ON p.id_produit = i.id_produit
-                        WHERE id_commande= :idCommande";
-
+                $connexion = Database::recupererConnexion();        
+                $sql = "SELECT id_produit, quantite FROM produit_commande WHERE id_commande = :idCommande"; 
+                
                 $requette = $connexion->prepare($sql); 
                 $requette->execute([
-                    ':idCommande' =>$idCommande 
-                ]) ;
+                    ':idCommande' => $idCommande 
+                ]);
 
-                $donneesProduit = $requette->fetchAll(PDO::FETCH_ASSOC);
-                $produits = array_map(fn($donnee) => Produit::InitialiserAvecTableau($donnee),$donneesProduit);
-                return $produits;
-
+                $infosProduits = $requette->fetchAll(PDO::FETCH_ASSOC);
+                return $infosProduits; 
             } catch (PDOException $e) {
-                throw new Exception("Erreur lors de la recuperation des commandes : " . $e->getMessage());
+                throw new Exception("Erreur lors de la récupération des produits de la commande : " . $e->getMessage());
             }
         }
+
+        // Récupère tous les objets produits présents dans une commande
+        public function recupererProduitsCommande($idCommande) {
+            $produitService = new ProduitService(); 
+            try {
+                $produits = [];
+                $infosProduits = $this->recupererInfoProduitsCommande($idCommande);
+
+                if (empty($infosProduits)) {
+                    throw new Exception("Aucun produit trouvé pour la commande ID : $idCommande");
+                }
+
+                foreach ($infosProduits as $infosProduit) {
+                    $produit = $produitService->recupererProduitParId($infosProduit['id_produit']);
+                    $produit->setQteDansLePanier($infosProduit['quantite']);
+                    $produits[] = $produit;
+                }
+
+                return $produits;
+            } catch (Exception $e) {
+                throw new Exception("Erreur lors de la récupération des produits de la commande : " . $e->getMessage());
+            }
+        }
+
 
         //Aide la vue a afficher les commandes en evitant les repertion
         public static function afficherCommandes($commandes, $utilisateurService, $adressService, $statut,$tout) {
@@ -304,8 +313,6 @@
                 throw new Exception("Erreur lors de la recuperation des commandes : " . $e->getMessage());
             }
         }
-        
-        
     }
 
 ?>

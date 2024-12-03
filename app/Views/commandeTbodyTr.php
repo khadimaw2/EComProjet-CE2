@@ -20,7 +20,7 @@ $roleConnecte = $_SESSION['utilisateur']->getRole();
     <td class="text-center">
         <!-- Bouton Voir les détails -->
         <a class="btn btn-sm btn-info" title="Voir les détails" 
-           href="detail-commande.php?id=<?= $commande->getIdCommande(); ?>">
+           href="details-commande.php?id=<?= $commande->getIdCommande(); ?>">
             <i class="bi bi-eye"></i>
         </a>
 

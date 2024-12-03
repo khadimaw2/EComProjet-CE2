@@ -21,7 +21,7 @@
                 <?php
                     if(isset($_SESSION['utilisateur']) && $_SESSION['utilisateur']->getRole() == "client") { ?>
                         <li class="nav-item">
-                            <a class="nav-link text-light" href="listeCommandeUtilisateur.php">Mes commandes</a>
+                            <a class="nav-link text-light" href="../publics/commandes-utilisateur.php">Mes commandes</a>
                         </li>
 
                 <!-- Element du navbar d'un admin -->

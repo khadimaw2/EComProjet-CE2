@@ -14,7 +14,7 @@ try {
 
 
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        if (empty($_POST['id']) || !is_numeric($_POST['id'], FILTER_VALIDATE_INT)) {
+        if (empty($_POST['id']) || !is_numeric($_POST['id'])) {
             throw new Exception("ID de la commande invalide.");
         }
         if (empty($_POST['action'])) {
