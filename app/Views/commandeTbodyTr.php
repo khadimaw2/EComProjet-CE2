@@ -13,7 +13,7 @@ $roleConnecte = $_SESSION['utilisateur']->getRole();
     <td><?= htmlspecialchars($adressClient); ?></td>
     <td>
         <span class="badge <?= $commande->getStatut() == 0 ? 'text-bg-light' : 'text-bg-success'; ?>">
-            <?= $commande->getStatut() == 0 ? 'À livrer' : 'Livrée'; ?>
+            <?= $commande->getStatut() == 0 ? 'Àlivrer' : 'Livrée'; ?>
         </span>
     </td>
     <td><?= htmlspecialchars($commande->getPrixTotal()) . ' $'; ?></td>
@@ -39,7 +39,8 @@ $roleConnecte = $_SESSION['utilisateur']->getRole();
               onsubmit="return confirm('Êtes-vous sûr de vouloir annuler la livraison ?');">
             <input type="hidden" name="action" value="reinitialiser-livraison">
             <input type="hidden" name="id" value="<?= $commande->getIdCommande(); ?>">
-            <button type="submit" class="btn btn-sm btn-warning" title="Annuler la livraison">
+            <button type="submit" class="btn btn-sm btn-warning" title="Annuler la livraison"
+                <?= $roleConnecte !== 'admin' ? 'disabled' : ''; ?>>
                 <i class="bi bi-arrow-counterclockwise"></i> 
             </button>
         </form>

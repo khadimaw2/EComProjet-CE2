@@ -78,7 +78,8 @@
         public function recupererChaineAdressUtilisateur($idUtilisateur) : string {
             $adresse = $this->recupererAdressUtilisateur($idUtilisateur);
             if ($adresse) {
-                return  htmlspecialchars($adresse['numero'].' '.$adresse['rue'].' '.$adresse['ville'].' '.$adresse['province'].' '.$adresse['pays'].' '.$adresse['code_postal']);
+                return  htmlspecialchars($adresse['numero'].' '.$adresse['rue'].' '.$adresse['ville'].' '.$adresse['province'].' '.$adresse['pays']);
+                //.' '.$adresse['code_postal']
             } else {
                 return 'Adresse non disponible';
             }
