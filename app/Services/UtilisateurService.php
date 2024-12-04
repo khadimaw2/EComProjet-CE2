@@ -270,9 +270,9 @@ class UtilisateurService {
                 ':mdpHash'=>$mdpHash
             ]);
 
-            // if ($requete->rowCount() === 0) {
-            //     throw new Exception("Courriel inexistant introuvable");
-            // }
+            if ($requete->rowCount() === 0) {
+                throw new Exception("Aucune modification enregistrer");
+            }
 
             $requete->rowCount() > 0 ?? throw new Exception("Id ou role de l'utilisateur invalide") ;       
         } catch (PDOException $e) {
@@ -284,7 +284,7 @@ class UtilisateurService {
     function genererTokenReinitialisation(string $email): string {
         try {
             $token = bin2hex(random_bytes(32));
-            $expire_at = date('Y-m-d H:i:s', strtotime('+1 hour')); 
+            $expire_at = date('Y-m-d H:i:s', strtotime('+5 minutes')); // Expire dans 5 minutes
             $sql = "INSERT INTO tokens_reinitialisation (email, token, expire_at)
                 VALUES (:email, :token, :expire_at)";
 
@@ -304,25 +304,26 @@ class UtilisateurService {
         
     }
 
-    //Verfiication du tocken si correct, return l'email. Sinon return false
-    function validerToken(string $token): bool {
+    //Verfiication du tocken si correct.
+    public function validerToken(string $token): string|false {
         try {
             $sql = "SELECT email FROM tokens_reinitialisation
-                WHERE token = :token AND expire_at > NOW()";
-
+                    WHERE token = :token AND expire_at > NOW()";
+    
             $connexion = Database::recupererConnexion();
-
+    
             $requete = $connexion->prepare($sql);
             $requete->execute([':token' => $token]);
             $result = $requete->fetch();
-
+    
+            // Retourne l'email si trouvé, sinon false
             return $result ? $result['email'] : false;
-
+    
         } catch (PDOException $e) {
-            throw new Exception("Erreur lors de la validation du tocken".$e);   
-        }       
+            throw new Exception("Erreur lors de la validation du token : " . $e->getMessage());
+        }
     }
-
+    
     //Supprime un tocken apres utilisation
     function supprimerToken(string $token): void {
         try {
@@ -332,7 +333,6 @@ class UtilisateurService {
 
             $requete = $connexion->prepare($sql);
             $requete->execute([':token' => $token]);
-            $result = $requete->fetch();
 
         } catch (PDOException $e) {
             throw new Exception("Erreur lors de la suppression du tocken".$e);   

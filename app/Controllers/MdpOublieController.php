@@ -17,7 +17,7 @@ session_start();
         }
         
         //Affiche la vue du formualaire
-        public function afficherFormulaireMdpOublie($errors = [], $values = []){
+        public function afficherFormulaireMdpOublie($errors = [], $values = [], $courriel){
             include __DIR__.'/../Views/mdpOublieView.php';
         }
 
@@ -26,11 +26,10 @@ session_start();
             try {
                 // Validation des données du formulaire
                 list($errors, $values) = ValidateurDeFormulaire::validerFormulaireMdpOublie($donneesFormulaire);
-    
+                $courriel = $donneesFormulaire['courriel'];
                 if (empty($errors)) {
-                    $utilisateurService->majMdp();
-
-
+                    $nouveauMdp = $donneesFormulaire['mot_de_passe'] ;
+                    $this->utilisateurService->majMdp($nouveauMdp,$courriel);
                     ValidateurDeFormulaire::unsetSessionVariables(['errors','values']);
                     RedirectionPage::redirrigersVersPage('connexion.php');
                     exit;
@@ -39,7 +38,8 @@ session_start();
                     // Stocke erreurs et valeurs pour ré-affichage
                     $_SESSION['errors'] = $errors;
                     $_SESSION['values'] = $values;
-                    $this->afficherFormulaireMdpOublie($errors, $values);
+
+                    $this->afficherFormulaireMdpOublie($errors, $values,$courriel);
                 }
             } catch (Exception $e) {
                 GestionnaireErreur::redirigerVersErreurPage($e->getMessage());

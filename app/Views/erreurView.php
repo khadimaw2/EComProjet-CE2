@@ -13,7 +13,7 @@
                 <div class="row">
                     <div class="col-12 text-center my-4">
                         <div class="alert alert-danger " role="alert">
-                            <h3 class=".fs-4 text"> Une erreur s'est produite : "<?php echo htmlspecialchars($_SESSION['error_message']) ?> </h1>
+                            <h3 class=".fs-4 text"> Une erreur s'est produite : <?php echo htmlspecialchars($_SESSION['error_message']) ?> </h1>
                         </div>
                     </div>
                 </div>

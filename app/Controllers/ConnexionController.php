@@ -57,7 +57,7 @@ session_start();
             
         }
 
-
+        //Verfication de la demande de renetialisation de mdp 
         public function verifierDemande($donneesFormulaire){
             try {
                 $errors = ValidateurDeFormulaire::verifierFormDemandeRenetialisation($donneesFormulaire);
@@ -79,7 +79,6 @@ session_start();
             }
         }
 
-
         //Genere un lien temporaire
         private function genererLienRenetialiation($email){
             try {
@@ -92,7 +91,7 @@ session_start();
             }
         }
 
-        // Fonction d'envoie d'email 
+        // Mot de passe oublie : Fonction d'envoie d'email pour renetialisation de mot de pass
         private function envoieEmail($emailDestinataire, $lien){
             require_once __DIR__ . '/../../vendor/autoload.php'; // Inclure l'autoloader Composer si nécessaire
 
@@ -137,8 +136,6 @@ session_start();
         public function deconnexion(): void {
             unset($_SESSION['utilisateur']);
         }
-
-
         
     }
 ?>

@@ -49,6 +49,7 @@ use App\Services\ValidateurDeFormulaire;
                                     }
                                 ?>
                             </div>
+                            <input type="hidden" name="courriel" value=<?= htmlspecialchars($courriel)?>>
 
                             <!-- Boutons d'action -->
                             <div class="d-grid gap-2">
