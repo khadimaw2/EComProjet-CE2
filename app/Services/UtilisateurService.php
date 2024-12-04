@@ -280,6 +280,66 @@ class UtilisateurService {
         }
     }
 
+    //Genere un tocken de renetialisation , le stock dans la bd et le retourne
+    function genererTokenReinitialisation(string $email): string {
+        try {
+            $token = bin2hex(random_bytes(32));
+            $expire_at = date('Y-m-d H:i:s', strtotime('+1 hour')); 
+            $sql = "INSERT INTO tokens_reinitialisation (email, token, expire_at)
+                VALUES (:email, :token, :expire_at)";
+
+            $connexion = Database::recupererConnexion();
+
+            $requete = $connexion->prepare($sql);
+            
+            $requete->execute([
+                ':email' => $email,
+                ':token' => $token,
+                ':expire_at' => $expire_at
+            ]);
+            return $token;
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors de la generation du tocken".$e);   
+        }
+        
+    }
+
+    //Verfiication du tocken si correct, return l'email. Sinon return false
+    function validerToken(string $token): bool {
+        try {
+            $sql = "SELECT email FROM tokens_reinitialisation
+                WHERE token = :token AND expire_at > NOW()";
+
+            $connexion = Database::recupererConnexion();
+
+            $requete = $connexion->prepare($sql);
+            $requete->execute([':token' => $token]);
+            $result = $requete->fetch();
+
+            return $result ? $result['email'] : false;
+
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors de la validation du tocken".$e);   
+        }       
+    }
+
+    //Supprime un tocken apres utilisation
+    function supprimerToken(string $token): void {
+        try {
+            $sql = "DELETE FROM tokens_reinitialisation WHERE token = :token";
+
+            $connexion = Database::recupererConnexion();
+
+            $requete = $connexion->prepare($sql);
+            $requete->execute([':token' => $token]);
+            $result = $requete->fetch();
+
+        } catch (PDOException $e) {
+            throw new Exception("Erreur lors de la suppression du tocken".$e);   
+        } 
+
+    }
+
     //Deconnexion d'un utilisateur 
     public function deconnexion(){
         if(isset($_SESSION['utilisateur'])){

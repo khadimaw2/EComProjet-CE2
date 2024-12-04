@@ -12,12 +12,23 @@ use App\Services\ValidateurDeFormulaire;
             </div>
         </div>
 
-        <!-- Affichage des erreurs générales -->
+        <!-- Affichage des erreurs authentification -->
         <?php if (isset($errors["echecAuth"])) { ?>
             <div class="row justify-content-center">
                 <div class="col-md-6 col-sm-12">
                     <div class="alert alert-danger text-center" role="alert">
                         <i class="bi bi-exclamation-triangle-fill"></i> <?php echo $errors["echecAuth"]; ?>
+                    </div>
+                </div>
+            </div>
+        <?php } ?>
+
+        <!-- Affichage des confirmations d'envoie d'email  -->
+        <?php if (isset($message)) { ?>
+            <div class="row justify-content-center">
+                <div class="col-md-6 col-sm-12">
+                    <div class="alert alert-success text-center" role="alert">
+                        <i class="bi bi-check-circle-fill"></i></i> <?php echo $message; ?>
                     </div>
                 </div>
             </div>

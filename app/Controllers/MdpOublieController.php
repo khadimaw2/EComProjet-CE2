@@ -28,6 +28,7 @@ session_start();
                 list($errors, $values) = ValidateurDeFormulaire::validerFormulaireMdpOublie($donneesFormulaire);
     
                 if (empty($errors)) {
+                    $utilisateurService->majMdp();
 
 
                     ValidateurDeFormulaire::unsetSessionVariables(['errors','values']);
