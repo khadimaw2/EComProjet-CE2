@@ -43,5 +43,36 @@
                 GestionnaireErreur::redirigerVersErreurPage($e->getMessage());
             }
         }
+
+        public function rechercheProduit($cleDeRecherche) {
+            try {
+                $tousLesProduits = $this->produitService->recupererTousLesProduits();
+                $qteProduitDansLePanier = $this->calculerQuantiteTotalePanier();
+        
+                if (empty($cleDeRecherche)) {
+                    $this->afficherStore();
+                    return;
+                }
+        
+                $produitsTries = [];
+                foreach ($tousLesProduits as $produit) {
+                    // Vérifie si le nom du produit commence par la clé de recherche (insensible à la casse)
+                    if (stripos($produit->getNom(), $cleDeRecherche) === 0) {
+                        $produitsTries[] = $produit;
+                    }
+                }
+        
+                if (empty($produitsTries)) {
+                    $this->afficherStore();
+                } else {
+                    $produits = $produitsTries;
+                    include __DIR__ . '/../Views/storeView.php';
+                }
+        
+            } catch (Exception $e) {
+                GestionnaireErreur::redirigerVersErreurPage($e->getMessage());
+            }
+        }
+        
     }
 ?>

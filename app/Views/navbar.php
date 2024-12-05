@@ -48,8 +48,8 @@
             <!-- Elements du navbar standard  d'un utilisateur connecté-->
             <?php 
                 if(isset($_SESSION['utilisateur'])) { ?>
-                    <form class="d-flex me-2">
-                        <input class="form-control me-2" type="search" placeholder="Recherche" aria-label="Recherche">
+                    <form method="POST" action="../publics/store.php" class="d-flex me-2">
+                        <input class="form-control me-2" name='recherche' type="search" placeholder="Recherche" aria-label="Recherche">
                         <button class="btn btn-outline-light" type="submit">Rechercher</button>
                     </form>
 

@@ -93,7 +93,7 @@ session_start();
 
         // Mot de passe oublie : Fonction d'envoie d'email pour renetialisation de mot de pass
         private function envoieEmail($emailDestinataire, $lien){
-            require_once __DIR__ . '/../../vendor/autoload.php'; // Inclure l'autoloader Composer si nécessaire
+            require_once __DIR__ . '/../../vendor/autoload.php';
 
             $mail = new \PHPMailer\PHPMailer\PHPMailer(true);
 
@@ -108,11 +108,9 @@ session_start();
                 $mail->SMTPSecure = \PHPMailer\PHPMailer\PHPMailer::ENCRYPTION_STARTTLS;
                 $mail->Port = 587;
 
-                // Destinataires
                 $mail->setFrom('aidebeautystore5@gmail.com', 'supportbeautystore'); 
                 $mail->addAddress($emailDestinataire); 
 
-                // Contenu de l'e-mail
                 $mail->isHTML(true);
                 $mail->Subject = 'Reinitialisation de votre mot de passe';
                 $mail->Body = "
