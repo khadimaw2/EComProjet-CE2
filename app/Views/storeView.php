@@ -15,8 +15,11 @@
     <div class="container mt-5">
       <div class="row">
         <div class="col-12 text-center my-4">
-          <h1 class="page-title text-success">Store</h1>
-          <p class="fs-5 opacity-50"> Boutique pour les ancien(ne)s moches et futur(e)s beaux/belles</p>
+        <h1 class="page-title text-success d-flex align-items-center justify-content-center fs-1 text">
+            <b>Boutique</b>
+            <img src="../ressources/shopping-bag-icon-corrected-white (1).png" alt="Shopping Bag Icon" class="me-2" style="width: 100px; height: 100px;">
+        </h1>
+        <p class="fs-5 opacity-50"> Entrez moche, sortez belle ! / Entrez belle, sortez belle++ !</p>
         </div>
       </div>
     </div>

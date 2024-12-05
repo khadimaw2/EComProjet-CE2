@@ -25,6 +25,7 @@ require_once 'header.php';
                                 <th scope="col">Nom</th>
                                 <th scope="col">Prénom</th>
                                 <th scope="col">Courriel</th>
+                                <th scope="col">Telephone</th>
                                 <th scope="col">Rôle</th>
                                 <th scope="col">Adresse</th>
                                 <th scope="col" class="text-center">Actions</th>
@@ -39,6 +40,7 @@ require_once 'header.php';
                                     <td><?= htmlspecialchars($utilisateur->getNom()); ?></td>
                                     <td><?= htmlspecialchars($utilisateur->getPrenom()); ?></td>
                                     <td><?= htmlspecialchars($utilisateur->getCourriel()); ?></td>
+                                    <td><?= htmlspecialchars($utilisateur->getTelephone()); ?></td>
                                     <td>
                                         
                                     <span class="badge 

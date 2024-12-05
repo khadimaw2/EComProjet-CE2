@@ -9,7 +9,7 @@ $roleConnecte = $_SESSION['utilisateur']->getRole();
     <th scope="row"><?= $i++; ?></th>
     <td><?= htmlspecialchars($commande->getDate()); ?></td>
     <td><?= htmlspecialchars($utilisateur->getPrenom() . ' ' . $utilisateur->getNom()); ?></td>
-    <td><?= htmlspecialchars($utilisateur->getCourriel()); ?></td>
+    <td><?= htmlspecialchars($utilisateur->getTelephone()); ?></td>
     <td><?= htmlspecialchars($adressClient); ?></td>
     <td>
         <span class="badge <?= $commande->getStatut() == 0 ? 'text-bg-light' : 'text-bg-success'; ?>">

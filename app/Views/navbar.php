@@ -13,7 +13,7 @@
                 <!-- Element du navbar standard d'un utilisateur non connecté -->
                 <li class="nav-item"><a class="nav-link active text-light" href="#">Home</a></li>
 
-                <li class="nav-item"><a class="nav-link text-light" href="store.php">Store</a></li>
+                <li class="nav-item"><a class="nav-link text-light" href="store.php">Boutique</a></li>
 
                 <li class="nav-item"><a class="nav-link text-light" href="panier.php">Voir panier</a></li>
 
