@@ -119,7 +119,7 @@ session_start();
                                 <p>Bonjour,</p>
                                 <p>Veuillez cliquer sur le lien suivant pour réinitialiser votre mot de passe :</p>
                                 <p><a href='$lien'>$lien</a></p>
-                                <p><strong>Attention :</strong> Ce lien expirera dans 10 minutes.</p>
+                                <p><strong>Attention :</strong> Ce lien expirera dans 5 minutes.</p>
                                 <p>Cordialement,<br>L'équipe de support BeautyStore</p>
                                 <p>Cordialement,<br>Ne pas repondre</p>
                             ";

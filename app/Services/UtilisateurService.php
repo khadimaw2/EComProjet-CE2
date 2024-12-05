@@ -4,7 +4,10 @@ namespace App\Services;
 use App\Models\Utilisateur;
 use Exception;
 use PDO;
+use DateTime;
 use PDOException;
+date_default_timezone_set('America/Toronto'); //Fuseau de montreal
+
 
 class UtilisateurService {
 
@@ -284,25 +287,30 @@ class UtilisateurService {
     function genererTokenReinitialisation(string $email): string {
         try {
             $token = bin2hex(random_bytes(32));
-            $expire_at = date('Y-m-d H:i:s', strtotime('+5 minutes')); // Expire dans 5 minutes
+    
+            // Définit l'expiration à 5 minutes à partir de maintenant
+            $now = new DateTime();
+            $now->modify('+5 minutes');
+            $expire_at = $now->format('Y-m-d H:i:s');
+    
             $sql = "INSERT INTO tokens_reinitialisation (email, token, expire_at)
-                VALUES (:email, :token, :expire_at)";
-
+                    VALUES (:email, :token, :expire_at)";
+    
             $connexion = Database::recupererConnexion();
-
+    
             $requete = $connexion->prepare($sql);
-            
             $requete->execute([
                 ':email' => $email,
                 ':token' => $token,
                 ':expire_at' => $expire_at
             ]);
+    
             return $token;
         } catch (PDOException $e) {
-            throw new Exception("Erreur lors de la generation du tocken".$e);   
+            throw new Exception("Erreur lors de la génération du token : " . $e->getMessage());
         }
-        
     }
+    
 
     //Verfiication du tocken si correct.
     public function validerToken(string $token): string|false {
